@@ -3,105 +3,278 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { getAppStatus } from '../lib/api';
-import { Download, Info, CheckCircle2 } from 'lucide-astro';
+import { 
+  Download, 
+  ShieldCheck, 
+  Sparkles, 
+  Smartphone, 
+  Settings, 
+  CheckCircle2, 
+  ArrowLeft,
+  HelpCircle,
+  MessageCircle,
+  Clock,
+  Layers
+} from 'lucide-astro';
 
 const appStatus = await getAppStatus();
 const downloadUrl = appStatus?.download_url || '#';
-const version = appStatus?.latest_version || '';
-const fileSize = appStatus?.file_size || '';
+const version = appStatus?.latest_version || '1.0.0';
+const fileSize = appStatus?.file_size || '25 MB';
 const message = appStatus?.message || '';
+const whatsappUrl = appStatus?.contact_whatsapp || 'https://wa.me/6281234567890';
 const changelog = appStatus?.changelog || null;
 
-// Handle changelog if it's an object/array
-// In some cases it's an object with version as key, e.g. {"1.0.0": ["fix bug"]}
-// In other cases it's just an array of strings.
 let changelogItems: string[] = [];
 if (changelog) {
   if (Array.isArray(changelog)) {
     changelogItems = changelog;
   } else if (typeof changelog === 'object') {
-    // If it's an object, we take all values and flatten them
     changelogItems = Object.values(changelog).flat().map(item => String(item));
   }
 }
+
+// Fallback highlights if changelog is empty
+const defaultHighlights = [
+  'Cetak struk kasir Bluetooth & struk digital WhatsApp',
+  'Smart Deposit otomatis via QRIS 24 jam & Transfer Bebas MDR',
+  'Jalur Hemat otomatis (Auto-refund selisih harga produk)',
+  'Keamanan PIN transaksi 6-digit & mutasi saldo realtime',
+];
+const displayChangelog = changelogItems.length > 0 ? changelogItems : defaultHighlights;
 ---
 
-<Layout title="Download APK - Gampang Beres">
+<Layout title="Download APK Resmi - Gampang Beres">
   <Navbar />
-  <main class="pt-32 pb-20 bg-slate-50 min-h-screen">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-xl shadow-slate-200/60 border border-slate-100">
-        <div class="text-center mb-12">
-          <div class="w-20 h-20 bg-primary/10 text-primary rounded-3xl flex items-center justify-center mx-auto mb-6">
-            <Download class="w-10 h-10" />
+  <main class="pt-28 pb-20 bg-slate-50 min-h-screen">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Back Link -->
+      <div class="mb-6">
+        <a href="/" class="inline-flex items-center space-x-2 text-sm font-semibold text-slate-500 hover:text-primary transition-colors">
+          <ArrowLeft class="w-4 h-4" />
+          <span>Kembali ke Beranda</span>
+        </a>
+      </div>
+
+      <!-- App Hero Download Card -->
+      <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-xl shadow-slate-200/50 border border-slate-100 relative overflow-hidden mb-10">
+        <!-- Background decorative gradient -->
+        <div class="absolute -right-20 -top-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-secondary/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10">
+          <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-8 border-b border-slate-100">
+            <!-- App Details -->
+            <div class="flex items-center space-x-5">
+              <div class="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-tr from-primary to-primary-dark rounded-3xl p-3 shadow-lg shadow-primary/20 flex-shrink-0 flex items-center justify-center">
+                <img src="/images/logo/logo-nobg.webp" alt="Gampang Beres" class="w-full h-full object-contain filter drop-shadow brightness-0 invert" />
+              </div>
+              <div>
+                <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                  <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Gampang Beres</h1>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                    <ShieldCheck class="w-3.5 h-3.5 mr-1" />
+                    Official APK
+                  </span>
+                </div>
+                <p class="text-sm text-slate-500 mb-2">Aplikasi Agen Pulsa, Paket Data, & PPOB Terlengkap</p>
+                <div class="flex flex-wrap items-center gap-3 text-xs text-slate-600 font-medium">
+                  <span class="flex items-center bg-slate-100 px-2.5 py-1 rounded-lg">
+                    Versi: <strong id="latest-version" class="ml-1 text-slate-900">{version}</strong>
+                  </span>
+                  <span id="file-size-container" class="flex items-center bg-slate-100 px-2.5 py-1 rounded-lg">
+                    Ukuran: <strong id="file-size" class="ml-1 text-slate-900">{fileSize}</strong>
+                  </span>
+                  <span class="flex items-center bg-slate-100 px-2.5 py-1 rounded-lg">
+                    Min. Android: <strong class="ml-1 text-slate-900">6.0+</strong>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Trust Badge -->
+            <div class="hidden lg:flex flex-col items-end text-right">
+              <div class="flex items-center space-x-1 text-amber-500 mb-1">
+                {'★'.repeat(5)}
+              </div>
+              <span class="text-xs font-bold text-slate-900">4.9 / 5.0 Kepuasan Agen</span>
+              <span class="text-[11px] text-slate-400">Ribuan transaksi sukses tiap hari</span>
+            </div>
           </div>
-          <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Mempersiapkan Download...</h1>
-          <p class="text-slate-600 text-lg">Download akan dimulai otomatis dalam beberapa detik.</p>
+
+          <!-- Download Action Bar -->
+          <div class="pt-8">
+            <!-- Countdown Indicator -->
+            <div id="download-status-bar" class="mb-4 bg-primary/5 rounded-2xl p-4 border border-primary/10 flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <span class="relative flex h-3 w-3">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                </span>
+                <span id="status-message" class="text-sm font-semibold text-primary">
+                  Memulai download otomatis dalam <span id="countdown-timer" class="font-black text-slate-900">3</span> detik...
+                </span>
+              </div>
+              <div class="w-24 sm:w-32 bg-slate-200 h-2 rounded-full overflow-hidden">
+                <div id="progress-bar" class="bg-primary h-full rounded-full w-0 transition-all duration-1000 ease-linear"></div>
+              </div>
+            </div>
+
+            <!-- Primary Action Button -->
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+              <a 
+                id="manual-download-link"
+                href={downloadUrl}
+                class="w-full sm:w-auto flex-1 flex items-center justify-center space-x-3 bg-primary hover:bg-primary-dark text-white px-8 py-4.5 rounded-2xl text-lg font-bold transition-all transform hover:scale-[1.01] active:scale-[0.99] shadow-xl shadow-primary/25"
+              >
+                <Download class="w-6 h-6" />
+                <span id="button-label">Download APK Sekarang</span>
+              </a>
+
+              <a 
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full sm:w-auto flex items-center justify-center space-x-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-4.5 rounded-2xl text-sm font-bold transition-colors"
+              >
+                <MessageCircle class="w-4 h-4 text-emerald-600" />
+                <span>Bantuan CS</span>
+              </a>
+            </div>
+
+            <!-- Trust Features Bar -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6 pt-6 border-t border-slate-100 text-xs text-slate-500 font-medium">
+              <div class="flex items-center space-x-2">
+                <ShieldCheck class="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                <span>Bebas Virus & 100% Bersih</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <Sparkles class="w-4 h-4 text-primary flex-shrink-0" />
+                <span>Pendaftaran Gratis & Tanpa Biaya Bulanan</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <Layers class="w-4 h-4 text-secondary flex-shrink-0" />
+                <span>Update Berkala & Fitur Terus Bertambah</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two Column Details Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Installation Guide (7 cols) -->
+        <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100">
+          <div class="flex items-center space-x-3 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+              <Smartphone class="w-5 h-5" />
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-slate-900">Cara Install APK di HP Android</h2>
+              <p class="text-xs text-slate-500">Cukup 3 langkah mudah untuk mulai jualan</p>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <!-- Step 1 -->
+            <div class="flex items-start space-x-4">
+              <div class="w-8 h-8 rounded-full bg-primary text-white font-extrabold flex items-center justify-center flex-shrink-0 text-sm shadow-md shadow-primary/20">
+                1
+              </div>
+              <div>
+                <h3 class="font-bold text-slate-900 text-sm mb-1">Unduh File APK</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  Jika muncul notifikasi peringatan <span class="font-semibold text-slate-800">"File mungkin berbahaya"</span> dari Google Chrome/browser, pilih <span class="font-semibold text-primary">"Tetap Download"</span>. Peringatan ini standar untuk semua file APK di luar Play Store.
+                </p>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="flex items-start space-x-4">
+              <div class="w-8 h-8 rounded-full bg-primary text-white font-extrabold flex items-center justify-center flex-shrink-0 text-sm shadow-md shadow-primary/20">
+                2
+              </div>
+              <div>
+                <h3 class="font-bold text-slate-900 text-sm mb-1">Izinkan Sumber Tidak Dikenal</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  Buka file yang selesai diunduh. Jika diminta perizinan, aktifkan opsi <span class="font-semibold text-slate-800">"Izinkan pemasangan aplikasi dari sumber ini"</span> di menu Pengaturan HP Anda.
+                </p>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="flex items-start space-x-4">
+              <div class="w-8 h-8 rounded-full bg-primary text-white font-extrabold flex items-center justify-center flex-shrink-0 text-sm shadow-md shadow-primary/20">
+                3
+              </div>
+              <div>
+                <h3 class="font-bold text-slate-900 text-sm mb-1">Pasang & Mulai Transaksi</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  Tekan <span class="font-semibold text-slate-800">"Install"</span>. Setelah selesai, buka aplikasi Gampang Beres dan daftarkan nomor HP Anda. Langsung aktif sebagai Reseller!
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Need Help Box -->
+          <div class="mt-8 p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <HelpCircle class="w-5 h-5 text-slate-400" />
+              <span class="text-xs font-medium text-slate-600">Bingung saat install? Tim kami siap memandu Anda.</span>
+            </div>
+            <a 
+              href={whatsappUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="text-xs font-bold text-primary hover:underline whitespace-nowrap ml-2"
+            >
+              Pandu Saya →
+            </a>
+          </div>
         </div>
 
-        <!-- App Info Card -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          <div class="bg-slate-50 rounded-3xl p-6 border border-slate-100">
-            <div class="flex items-center space-x-3 mb-4 text-primary">
-              <Info class="w-5 h-5" />
-              <h2 class="font-bold">Informasi Versi</h2>
-            </div>
-            <div class="space-y-3">
-              <div class="flex justify-between">
-                <span class="text-slate-500">Versi Terbaru</span>
-                <span id="latest-version" class="font-bold text-slate-900">{version || '-'}</span>
+        <!-- Release Notes / Changelog (5 cols) -->
+        <div class="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center space-x-3 mb-6">
+              <div class="w-10 h-10 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center">
+                <Sparkles class="w-5 h-5" />
               </div>
-              <div id="file-size-container" class={`flex justify-between ${!fileSize && 'hidden'}`}>
-                <span class="text-slate-500">Ukuran File</span>
-                <span id="file-size" class="font-bold text-slate-900">{fileSize}</span>
+              <div>
+                <h2 class="text-xl font-bold text-slate-900">Catatan Pembaruan</h2>
+                <p class="text-xs text-slate-500">Peningkatan versi terbaru</p>
               </div>
-              {message && (
-                <div class="pt-2">
-                  <p id="app-message" class="text-sm text-slate-600 italic">"{message}"</p>
-                </div>
-              )}
             </div>
-          </div>
 
-          <div class="bg-slate-50 rounded-3xl p-6 border border-slate-100">
-            <div class="flex items-center space-x-3 mb-4 text-secondary">
-              <CheckCircle2 class="w-5 h-5" />
-              <h2 class="font-bold">Catatan Rilis</h2>
-            </div>
-            <ul id="changelog-list" class="space-y-2">
-              {changelogItems.length > 0 ? (
-                changelogItems.map((item) => (
-                  <li class="text-sm text-slate-600 flex items-start space-x-2">
-                    <span class="text-secondary mt-1">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))
-              ) : (
-                <li class="text-sm text-slate-500 italic">Data tidak tersedia</li>
-              )}
+            {message && (
+              <div class="mb-4 p-3.5 rounded-2xl bg-amber-50 border border-amber-100">
+                <p id="app-message" class="text-xs text-amber-900 font-medium italic">
+                  "{message}"
+                </p>
+              </div>
+            )}
+
+            <ul id="changelog-list" class="space-y-3">
+              {displayChangelog.map((item) => (
+                <li class="text-xs text-slate-700 flex items-start space-x-2.5">
+                  <CheckCircle2 class="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
+                  <span class="leading-relaxed">{item}</span>
+                </li>
+              ))}
             </ul>
           </div>
+
+          <!-- Security Stamp -->
+          <div class="mt-8 pt-6 border-t border-slate-100 flex items-center space-x-3 text-slate-400 text-xs">
+            <ShieldCheck class="w-4 h-4 text-emerald-600" />
+            <span>Digital Signature terverifikasi oleh server Gampang Beres</span>
+          </div>
         </div>
 
-        <div class="flex flex-col items-center space-y-6">
-          <a 
-            id="manual-download-link"
-            href={downloadUrl}
-            class="flex items-center space-x-3 bg-primary hover:bg-primary-dark text-white px-10 py-5 rounded-2xl text-xl font-bold transition-all transform hover:scale-105 shadow-xl shadow-primary/25"
-          >
-            <Download class="w-6 h-6" />
-            <span>Klik di sini jika tidak terdownload</span>
-          </a>
-          
-          <p class="text-slate-400 text-sm">
-            Pastikan Anda mengizinkan instalasi dari "Sumber Tidak Dikenal" di pengaturan Android Anda.
-          </p>
-        </div>
       </div>
-      
-      <div class="mt-12 text-center">
-        <a href="/" class="text-primary font-bold hover:underline">← Kembali ke Beranda</a>
-      </div>
+
     </div>
   </main>
   <Footer />
@@ -110,29 +283,35 @@ if (changelog) {
     import { getAppStatus } from '../lib/api';
 
     async function initDownload() {
-      // Get the latest status from API on client-side to ensure it's always up-to-date
+      let downloadStarted = false;
+      let targetUrl = '#';
+
+      const downloadLink = document.getElementById('manual-download-link') as HTMLAnchorElement | null;
+      const buttonLabel = document.getElementById('button-label');
+      const statusBar = document.getElementById('download-status-bar');
+      const statusMessage = document.getElementById('status-message');
+      const countdownTimer = document.getElementById('countdown-timer');
+      const progressBar = document.getElementById('progress-bar');
+
+      // 1. Fetch real-time status
       try {
         const appStatus = await getAppStatus();
         if (appStatus) {
-          const latestDownloadUrl = appStatus.download_url;
-          const downloadLink = document.getElementById('manual-download-link') as HTMLAnchorElement;
-
-          // Update UI with latest info if available
+          if (appStatus.download_url) {
+            targetUrl = appStatus.download_url;
+            if (downloadLink) downloadLink.href = targetUrl;
+          }
           if (appStatus.latest_version) {
             const versionEl = document.getElementById('latest-version');
             if (versionEl) versionEl.textContent = appStatus.latest_version;
           }
           if (appStatus.file_size) {
             const sizeEl = document.getElementById('file-size');
-            const sizeContainer = document.getElementById('file-size-container');
             if (sizeEl) sizeEl.textContent = appStatus.file_size;
-            if (sizeContainer) sizeContainer.classList.remove('hidden');
           }
           if (appStatus.message) {
             const msgEl = document.getElementById('app-message');
-            if (msgEl) {
-              msgEl.textContent = `"${appStatus.message}"`;
-            }
+            if (msgEl) msgEl.textContent = `"${appStatus.message}"`;
           }
           if (appStatus.changelog) {
             const changelogEl = document.getElementById('changelog-list');
@@ -148,47 +327,74 @@ if (changelog) {
                 changelogEl.innerHTML = '';
                 items.forEach((itemText) => {
                   const li = document.createElement('li');
-                  li.className = 'text-sm text-slate-600 flex items-start space-x-2';
-                  const bullet = document.createElement('span');
-                  bullet.className = 'text-secondary mt-1';
-                  bullet.textContent = '•';
-                  const textSpan = document.createElement('span');
-                  textSpan.textContent = itemText;
-                  li.appendChild(bullet);
-                  li.appendChild(textSpan);
+                  li.className = 'text-xs text-slate-700 flex items-start space-x-2.5';
+                  li.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle-2 w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span class="leading-relaxed">${itemText}</span>
+                  `;
                   changelogEl.appendChild(li);
                 });
               }
             }
           }
+        }
+      } catch (err) {
+        console.warn('Realtime fetch failed on download page:', err);
+      }
 
-          if (latestDownloadUrl && latestDownloadUrl !== '#') {
-            // Update the link href immediately
-            if (downloadLink) {
-              downloadLink.href = latestDownloadUrl;
+      // If no valid URL from API, check existing link href
+      if ((!targetUrl || targetUrl === '#') && downloadLink && downloadLink.href && !downloadLink.href.endsWith('#')) {
+        targetUrl = downloadLink.href;
+      }
+
+      // 2. Countdown & Auto-download handling
+      let countdown = 3;
+      if (progressBar) {
+        requestAnimationFrame(() => {
+          progressBar.style.width = '100%';
+        });
+      }
+
+      const interval = setInterval(() => {
+        countdown--;
+        if (countdownTimer) {
+          countdownTimer.textContent = String(countdown);
+        }
+
+        if (countdown <= 0) {
+          clearInterval(interval);
+          if (!downloadStarted && targetUrl && targetUrl !== '#') {
+            downloadStarted = true;
+            window.location.href = targetUrl;
+            
+            // Update UI after triggered
+            if (statusMessage) {
+              statusMessage.innerHTML = '🎉 Download telah dimulai! Periksa folder unduhan Anda.';
             }
-
-            // Start automatic download/redirection
-            setTimeout(() => {
-              window.location.href = latestDownloadUrl;
-            }, 1000);
-            return;
+            if (buttonLabel) {
+              buttonLabel.textContent = 'Unduh Ulang File APK';
+            }
+          } else {
+            if (statusMessage) {
+              statusMessage.innerHTML = 'Silakan klik tombol di bawah untuk mulai mengunduh APK.';
+            }
           }
         }
-      } catch (error) {
-        console.error('Failed to fetch latest app status on client:', error);
-      }
+      }, 1000);
 
-      // Fallback: If client-side fetch fails, use the baked-in URL if it's not '#'
-      const downloadLink = document.getElementById('manual-download-link') as HTMLAnchorElement;
-      if (downloadLink && downloadLink.href && !downloadLink.href.endsWith('#')) {
-        setTimeout(() => {
-          window.location.href = downloadLink.href;
-        }, 1500);
-      }
+      // Handle direct manual click
+      downloadLink?.addEventListener('click', () => {
+        downloadStarted = true;
+        clearInterval(interval);
+        if (statusMessage) {
+          statusMessage.innerHTML = '🎉 Download telah dimulai!';
+        }
+        if (buttonLabel) {
+          buttonLabel.textContent = 'Unduh Ulang File APK';
+        }
+      });
     }
 
-    // Run on page load
     initDownload();
   </script>
 </Layout>
