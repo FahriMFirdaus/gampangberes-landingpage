@@ -1,29 +1,52 @@
 ---
-import { Smartphone, Zap, Wallet, Droplets, Monitor, Gamepad2 } from 'lucide-astro';
+import { 
+  Smartphone, 
+  Zap, 
+  Wallet, 
+  Droplets, 
+  Tv, 
+  Gamepad2, 
+  PhoneCall, 
+  HeartPulse, 
+  Flame, 
+  Globe2 
+} from 'lucide-astro';
 
 const services = [
-  { icon: Smartphone, label: 'Pulsa & Data' },
-  { icon: Zap, label: 'Token PLN' },
+  { icon: Smartphone, label: 'Pulsa & Paket Data' },
+  { icon: Zap, label: 'Token & Tagihan PLN' },
   { icon: Wallet, label: 'Top-up E-Wallet' },
-  { icon: Droplets, label: 'PDAM' },
-  { icon: Monitor, label: 'TV Kabel' },
+  { icon: Droplets, label: 'PDAM Nasional' },
   { icon: Gamepad2, label: 'Voucher Game' },
+  { icon: Tv, label: 'TV Kabel & Streaming' },
+  { icon: HeartPulse, label: 'BPJS Kesehatan' },
+  { icon: Globe2, label: 'Internet Pascabayar' },
+  { icon: Flame, label: 'Gas Negara (PGN)' },
+  { icon: PhoneCall, label: 'Paket Nelpon & SMS' },
 ];
 ---
 
-<section id="layanan" class="py-16 bg-white border-y border-slate-50">
+<section id="layanan" class="py-20 bg-slate-50 border-y border-slate-100">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <p class="text-center text-sm font-bold text-slate-600 uppercase tracking-widest mb-10">
-      Mendukung ratusan layanan digital di seluruh Indonesia
-    </p>
+    <div class="text-center mb-12">
+      <span class="text-xs font-black text-primary uppercase tracking-widest bg-primary/10 px-3 py-1 rounded-full">
+        Ekosistem PPOB Terlengkap
+      </span>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-3 mb-2">
+        Mendukung Ratusan Layanan Digital Seluruh Indonesia
+      </h2>
+      <p class="text-sm text-slate-500 max-w-xl mx-auto">
+        Satu saldo untuk ribuan produk digital harian. Lengkap, stabil, dan bisa transaksi 24 jam non-stop.
+      </p>
+    </div>
     
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6">
       {services.map((item) => (
-        <div class="flex flex-col items-center justify-center p-4 group">
-          <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary/5 group-hover:text-primary transition-all duration-300">
-            <item.icon class="w-8 h-8 text-slate-400 group-hover:text-primary transition-colors" />
+        <div class="flex flex-col items-center justify-center p-5 rounded-2xl bg-white border border-slate-100 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 group">
+          <div class="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center mb-3 group-hover:bg-primary/10 transition-all duration-300">
+            <item.icon class="w-7 h-7 text-slate-400 group-hover:text-primary transition-colors" />
           </div>
-          <span class="text-sm font-semibold text-slate-600 group-hover:text-slate-900 transition-colors">{item.label}</span>
+          <span class="text-xs sm:text-sm font-bold text-slate-700 text-center group-hover:text-primary transition-colors">{item.label}</span>
         </div>
       ))}
     </div>

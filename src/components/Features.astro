@@ -1,5 +1,14 @@
 ---
-import { Zap, ShieldCheck, Printer, QrCode, Sparkles, TrendingUp } from 'lucide-astro';
+import { 
+  Zap, 
+  ShieldCheck, 
+  Printer, 
+  QrCode, 
+  Sparkles, 
+  TrendingUp,
+  WalletCards,
+  Headphones
+} from 'lucide-astro';
 import { getAppStatus, formatCurrency } from '../lib/api';
 
 const appStatus = await getAppStatus();
@@ -20,7 +29,7 @@ const features = [
   },
   {
     icon: Printer,
-    title: 'Cetak Struk Bluetooth & Custom Toko',
+    title: 'Cetak Struk Bluetooth & Toko',
     description: 'Cetak struk fisik via printer thermal Bluetooth atau bagikan struk digital via WhatsApp dengan nama toko, logo, dan harga jual yang bisa Anda atur sendiri.',
     color: 'bg-emerald-600',
   },
@@ -31,15 +40,27 @@ const features = [
     color: 'bg-indigo-600',
   },
   {
+    icon: WalletCards,
+    title: 'Smart Deposit 24/7 Bebas MDR',
+    description: 'Isi saldo fleksibel kapan saja: QRIS Otomatis instan 24 jam atau Transfer GoPay Manual bebas potongan biaya admin untuk nominal besar.',
+    color: 'bg-cyan-600',
+  },
+  {
     icon: TrendingUp,
     title: 'Harga Reseller & Bangun Tim',
     description: `Mulai deposit ringan dari <span id="dynamic-feature-min-deposit-reseller">${minDepositReseller}</span>. Dapatkan komisi referal pasif setiap kali jaringan downline Anda bertransaksi.`,
     color: 'bg-amber-600',
   },
   {
+    icon: Headphones,
+    title: 'Bantuan Komplain 1-Klik',
+    description: 'Jika transaksi tertunda atau nomor salah, ajukan komplain langsung dari struk. Customer Support kami sigap membantu hingga tuntas.',
+    color: 'bg-rose-600',
+  },
+  {
     icon: ShieldCheck,
     title: 'Aman & Transparan Berlapis',
-    description: 'Dilengkapi PIN transaksi 6-digit, mutasi saldo realtime, smart deposit otomatis (QRIS 24/7 & Transfer Bebas MDR), dan CS responsif.',
+    description: 'Perlindungan PIN 6-digit untuk setiap transaksi & penarikan, mutasi saldo realtime, serta enkripsi data standar industri.',
     color: 'bg-primary-dark',
   },
 ];
@@ -48,21 +69,26 @@ const features = [
 <section id="fitur" class="py-24 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
-      <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Fitur Lengkap untuk Sukses Usaha Konter & Pribadi</h2>
-      <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-        Bukan sekadar aplikasi pulsa biasa. Kami rancang fitur profesional untuk memudahkan operasional usaha dan menghemat pengeluaran digital Anda.
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-4">
+        <span>Solusi Usaha Modern</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Fitur Lengkap untuk Sukses Usaha Konter & Pribadi</h2>
+      <p class="text-base sm:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+        Bukan sekadar aplikasi pulsa biasa. Kami rancang platform profesional yang memprioritaskan kecepatan transaksi, efisiensi modal, dan kemudahan operasional konter harian Anda.
       </p>
     </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {features.map((feature) => (
-        <div class="relative group p-8 rounded-3xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:border-slate-200 transition-all duration-300 hover:shadow-xl hover:shadow-slate-100">
-          <div class="mb-6 w-14 h-14 rounded-2xl flex items-center justify-center text-white transition-transform group-hover:scale-110 shadow-lg shadow-slate-200" class:list={[feature.color]}>
-            <feature.icon class="w-7 h-7" />
+        <div class="relative group p-6 sm:p-7 rounded-3xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:border-slate-200 transition-all duration-300 hover:shadow-xl hover:shadow-slate-100 flex flex-col justify-between">
+          <div>
+            <div class="mb-5 w-12 h-12 rounded-2xl flex items-center justify-center text-white transition-transform group-hover:scale-110 shadow-lg shadow-slate-200 flex-shrink-0" class:list={[feature.color]}>
+              <feature.icon class="w-6 h-6" />
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2.5 leading-snug">{feature.title}</h3>
+            <p class="text-slate-600 leading-relaxed text-xs sm:text-sm" set:html={feature.description}>
+            </p>
           </div>
-          <h3 class="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
-          <p class="text-slate-600 leading-relaxed text-sm" set:html={feature.description}>
-          </p>
         </div>
       ))}
     </div>
