@@ -7,7 +7,7 @@ if (!rawUrl.endsWith('/api')) {
 export const API_BASE_URL = rawUrl;
 export const BASE_URL = API_BASE_URL.replace(/\/api$/, '');
 
-// Cache dengan TTL — data di browser akan selalu fresh dalam 60 detik.
+// Cache dengan TTL, data di browser akan selalu fresh dalam 60 detik.
 // Ini memastikan perubahan dari dashboard admin langsung terlihat tanpa
 // user harus hard-refresh halaman.
 const CACHE_TTL_MS = 60 * 1000; // 60 detik
@@ -165,7 +165,7 @@ export async function getWhatsAppContacts() {
         number = extracted;
         link = `https://wa.me/${extracted}`;
       } else if (number.startsWith('http')) {
-        // URL format lain — pakai apa adanya
+        // URL format lain, pakai apa adanya
         link = number;
       } else {
         // Sudah berupa nomor mentah
@@ -271,10 +271,10 @@ export async function checkServerHealth(): Promise<{
     const latencyMs = Math.round(performance.now() - startTime);
 
     if (err?.name === 'AbortError') {
-      // Request di-abort karena timeout 5 detik — server tidak merespons
+      // Request di-abort karena timeout 5 detik, server tidak merespons
       console.warn('[Health Check] Server timeout setelah 5 detik');
     } else {
-      // Network error — tidak bisa terhubung ke server sama sekali
+      // Network error, tidak bisa terhubung ke server sama sekali
       console.warn('[Health Check] Tidak bisa menghubungi server:', err?.message);
     }
     return { status: 'offline', latencyMs: null };

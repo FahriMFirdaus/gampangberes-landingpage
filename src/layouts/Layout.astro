@@ -228,7 +228,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://gampangb
 		    }
 		  }
 
-		  // Jalankan keduanya segera saat halaman load — paralel, tidak saling tunggu
+		  // Jalankan keduanya segera saat halaman load, paralel, tidak saling tunggu
 		  syncDynamicData(true);
 		  updateServerStatus();
 

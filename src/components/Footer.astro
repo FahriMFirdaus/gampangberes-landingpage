@@ -7,7 +7,7 @@ const appStatus = await getAppStatus();
 const version = appStatus?.latest_version || '';
 const whatsappUrl = appStatus?.contact_whatsapp || '#';
 // Catatan: isMaintenance dari SSG tidak bisa dipercaya sebagai status server yang akurat.
-// Nilai ini hanya fallback — client-side script yang akan mengecek status sesungguhnya.
+// Nilai ini hanya fallback, client-side script yang akan mengecek status sesungguhnya.
 const isMaintenance = appStatus?.maintenance_mode || false;
 ---
 
