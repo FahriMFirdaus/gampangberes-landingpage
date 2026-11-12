@@ -26,6 +26,28 @@ const fileSize = appStatus?.file_size || '25 MB';
 const message = appStatus?.message || '';
 const changelog = appStatus?.changelog || null;
 
+// --- Rating: Hybrid SSG + Client Rehydration ---
+let ratingData: { average_score: number; total_count: number; distribution?: Record<string, number> } = { average_score: 4.9, total_count: 1, distribution: {} };
+let ratingLoaded = false;
+try {
+  const ratingRes = await fetch('https://api.gampangberes.biz.id/api/ratings/summary');
+  if (ratingRes.ok) {
+    const ratingJson = await ratingRes.json();
+    if (ratingJson.success && ratingJson.data) {
+      ratingData = ratingJson.data;
+      ratingLoaded = true;
+    }
+  }
+} catch (e) {
+  // fallback data tetap dipakai
+}
+
+const avgScore = ratingData.average_score?.toFixed(1) ?? '4.9';
+const totalCount = ratingData.total_count ?? 1;
+const formattedCount = totalCount >= 1000
+  ? `${(totalCount / 1000).toFixed(1)} ribu agen`
+  : `${totalCount} agen`;
+
 let changelogItems: string[] = [];
 if (changelog) {
   if (Array.isArray(changelog)) {
@@ -96,11 +118,13 @@ const displayChangelog = changelogItems.length > 0 ? changelogItems : defaultHig
 
             <!-- Trust Badge -->
             <div class="hidden lg:flex flex-col items-end text-right">
-              <div class="flex items-center space-x-1 text-amber-500 mb-1">
+              <div id="rating-stars" class="flex items-center space-x-1 text-amber-500 mb-1">
                 {'★'.repeat(5)}
               </div>
-              <span class="text-xs font-bold text-slate-900">4.9 / 5.0 Kepuasan Agen</span>
-              <span class="text-[11px] text-slate-400">Ribuan transaksi sukses tiap hari</span>
+              <span class="text-xs font-bold text-slate-900">
+                <span id="rating-score">{avgScore}</span> / 5.0 Kepuasan Agen Terverifikasi
+              </span>
+              <span id="rating-count" class="text-[11px] text-slate-400">dari {formattedCount}</span>
             </div>
           </div>
 
@@ -418,5 +442,35 @@ const displayChangelog = changelogItems.length > 0 ? changelogItems : defaultHig
     }
 
     initDownload();
+  </script>
+
+  <script>
+    // Client-side rehydration: refresh rating tanpa flash
+    async function refreshRating() {
+      try {
+        const res = await fetch('https://api.gampangberes.biz.id/api/ratings/summary');
+        if (!res.ok) return;
+        const json = await res.json();
+        if (!json.success || !json.data) return;
+
+        const data = json.data;
+        const scoreEl = document.getElementById('rating-score');
+        const countEl = document.getElementById('rating-count');
+
+        if (scoreEl && data.average_score) {
+          scoreEl.textContent = parseFloat(data.average_score).toFixed(1);
+        }
+        if (countEl && data.total_count) {
+          const count = data.total_count;
+          const formatted = count >= 1000
+            ? `${(count / 1000).toFixed(1)} ribu agen`
+            : `${count} agen`;
+          countEl.textContent = `dari ${formatted}`;
+        }
+      } catch (e) {
+        // diam-diam, tidak tampilkan error ke pengguna
+      }
+    }
+    refreshRating();
   </script>
 </Layout>

@@ -65,3 +65,4 @@ Jika Anda memiliki pertanyaan mengenai Kebijakan Privasi ini, silakan hubungi ka
 WhatsApp Resmi: 0851-9921-8085
 
 Email: admin@gampangberes.biz.id`;
+
