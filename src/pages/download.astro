@@ -2,19 +2,21 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import WhatsAppFloating from '../components/WhatsAppFloating.astro';
 import { getAppStatus } from '../lib/api';
 import { 
   Download, 
   ShieldCheck, 
   Sparkles, 
   Smartphone, 
-  Settings, 
+  Wrench, 
   CheckCircle2, 
   ArrowLeft,
   HelpCircle,
   MessageCircle,
-  Clock,
-  Layers
+  Layers,
+  ArrowDownCircle,
+  ChevronRight
 } from 'lucide-astro';
 
 const appStatus = await getAppStatus();
@@ -22,7 +24,6 @@ const downloadUrl = appStatus?.download_url || '#';
 const version = appStatus?.latest_version || '1.0.0';
 const fileSize = appStatus?.file_size || '25 MB';
 const message = appStatus?.message || '';
-const whatsappUrl = appStatus?.contact_whatsapp || 'https://wa.me/6281234567890';
 const changelog = appStatus?.changelog || null;
 
 let changelogItems: string[] = [];
@@ -47,7 +48,7 @@ const displayChangelog = changelogItems.length > 0 ? changelogItems : defaultHig
 <Layout title="Download APK Resmi - Gampang Beres">
   <Navbar />
   <main class="pt-28 pb-20 bg-slate-50 min-h-screen">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Back Link -->
       <div class="mb-6">
@@ -106,7 +107,7 @@ const displayChangelog = changelogItems.length > 0 ? changelogItems : defaultHig
           <!-- Download Action Bar -->
           <div class="pt-8">
             <!-- Countdown Indicator -->
-            <div id="download-status-bar" class="mb-4 bg-primary/5 rounded-2xl p-4 border border-primary/10 flex items-center justify-between">
+            <div id="download-status-bar" class="mb-5 bg-primary/5 rounded-2xl p-4 border border-primary/10 flex items-center justify-between">
               <div class="flex items-center space-x-3">
                 <span class="relative flex h-3 w-3">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -116,35 +117,34 @@ const displayChangelog = changelogItems.length > 0 ? changelogItems : defaultHig
                   Memulai download otomatis dalam <span id="countdown-timer" class="font-black text-slate-900">3</span> detik...
                 </span>
               </div>
-              <div class="w-24 sm:w-32 bg-slate-200 h-2 rounded-full overflow-hidden">
+              <div class="w-24 sm:w-36 bg-slate-200 h-2 rounded-full overflow-hidden">
                 <div id="progress-bar" class="bg-primary h-full rounded-full w-0 transition-all duration-1000 ease-linear"></div>
               </div>
             </div>
 
-            <!-- Primary Action Button -->
-            <div class="flex flex-col sm:flex-row items-center gap-4">
+            <!-- Primary Action Buttons (Proporsional & Nyaman) -->
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-4">
               <a 
                 id="manual-download-link"
                 href={downloadUrl}
-                class="w-full sm:w-auto flex-1 flex items-center justify-center space-x-3 bg-primary hover:bg-primary-dark text-white px-8 py-4.5 rounded-2xl text-lg font-bold transition-all transform hover:scale-[1.01] active:scale-[0.99] shadow-xl shadow-primary/25"
+                class="sm:col-span-8 flex items-center justify-center space-x-3 bg-primary hover:bg-primary-dark text-white px-8 py-5 rounded-2xl text-lg font-bold transition-all transform hover:scale-[1.01] active:scale-[0.99] shadow-xl shadow-primary/25 min-h-[64px]"
               >
-                <Download class="w-6 h-6" />
+                <Download class="w-6 h-6 flex-shrink-0" />
                 <span id="button-label">Download APK Sekarang</span>
               </a>
 
-              <a 
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="w-full sm:w-auto flex items-center justify-center space-x-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-4.5 rounded-2xl text-sm font-bold transition-colors"
+              <button 
+                type="button"
+                id="open-whatsapp-help-btn"
+                class="sm:col-span-4 flex items-center justify-center space-x-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 px-6 py-5 rounded-2xl text-base font-bold transition-colors min-h-[64px]"
               >
-                <MessageCircle class="w-4 h-4 text-emerald-600" />
-                <span>Bantuan CS</span>
-              </a>
+                <MessageCircle class="w-5 h-5 text-emerald-600 flex-shrink-0" />
+                <span>Bantuan Customer Service</span>
+              </button>
             </div>
 
             <!-- Trust Features Bar -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6 pt-6 border-t border-slate-100 text-xs text-slate-500 font-medium">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-8 pt-6 border-t border-slate-100 text-xs text-slate-500 font-medium">
               <div class="flex items-center space-x-2">
                 <ShieldCheck class="w-4 h-4 text-emerald-600 flex-shrink-0" />
                 <span>Bebas Virus & 100% Bersih</span>
@@ -154,122 +154,131 @@ const displayChangelog = changelogItems.length > 0 ? changelogItems : defaultHig
                 <span>Pendaftaran Gratis & Tanpa Biaya Bulanan</span>
               </div>
               <div class="flex items-center space-x-2">
-                <Layers class="w-4 h-4 text-secondary flex-shrink-0" />
-                <span>Update Berkala & Fitur Terus Bertambah</span>
+                <Wrench class="w-4 h-4 text-secondary flex-shrink-0" />
+                <span>Pemeliharaan & Peningkatan Sistem Berkala</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Two Column Details Section -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Layout Atas Bawah (Full Width Sejajar dengan Navbar) -->
+      <div class="space-y-8">
         
-        <!-- Installation Guide (7 cols) -->
-        <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100">
-          <div class="flex items-center space-x-3 mb-6">
-            <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-              <Smartphone class="w-5 h-5" />
+        <!-- Section 1: Panduan Instalasi (Atas) -->
+        <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-slate-100">
+          <div class="flex items-center space-x-3 mb-8">
+            <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+              <Smartphone class="w-6 h-6" />
             </div>
             <div>
-              <h2 class="text-xl font-bold text-slate-900">Cara Install APK di HP Android</h2>
-              <p class="text-xs text-slate-500">Cukup 3 langkah mudah untuk mulai jualan</p>
+              <h2 class="text-2xl font-bold text-slate-900">Cara Install APK di HP Android</h2>
+              <p class="text-sm text-slate-500">Cukup 3 langkah praktis untuk mulai bertransaksi</p>
             </div>
           </div>
 
-          <div class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- Step 1 -->
-            <div class="flex items-start space-x-4">
-              <div class="w-8 h-8 rounded-full bg-primary text-white font-extrabold flex items-center justify-center flex-shrink-0 text-sm shadow-md shadow-primary/20">
-                1
-              </div>
+            <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex flex-col justify-between">
               <div>
-                <h3 class="font-bold text-slate-900 text-sm mb-1">Unduh File APK</h3>
-                <p class="text-xs text-slate-600 leading-relaxed">
-                  Jika muncul notifikasi peringatan <span class="font-semibold text-slate-800">"File mungkin berbahaya"</span> dari Google Chrome/browser, pilih <span class="font-semibold text-primary">"Tetap Download"</span>. Peringatan ini standar untuk semua file APK di luar Play Store.
+                <div class="w-9 h-9 rounded-xl bg-primary text-white font-black flex items-center justify-center text-sm shadow-md shadow-primary/20 mb-4">
+                  1
+                </div>
+                <h3 class="font-bold text-slate-900 text-base mb-2">Unduh File APK</h3>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  Jika muncul peringatan <span class="font-semibold text-slate-800">"File mungkin berbahaya"</span> di browser Chrome, pilih <span class="font-semibold text-primary">"Tetap Download"</span>. Ini adalah pesan konfirmasi standar Android untuk file di luar Google Play Store.
                 </p>
               </div>
             </div>
 
             <!-- Step 2 -->
-            <div class="flex items-start space-x-4">
-              <div class="w-8 h-8 rounded-full bg-primary text-white font-extrabold flex items-center justify-center flex-shrink-0 text-sm shadow-md shadow-primary/20">
-                2
-              </div>
+            <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex flex-col justify-between">
               <div>
-                <h3 class="font-bold text-slate-900 text-sm mb-1">Izinkan Sumber Tidak Dikenal</h3>
-                <p class="text-xs text-slate-600 leading-relaxed">
-                  Buka file yang selesai diunduh. Jika diminta perizinan, aktifkan opsi <span class="font-semibold text-slate-800">"Izinkan pemasangan aplikasi dari sumber ini"</span> di menu Pengaturan HP Anda.
+                <div class="w-9 h-9 rounded-xl bg-primary text-white font-black flex items-center justify-center text-sm shadow-md shadow-primary/20 mb-4">
+                  2
+                </div>
+                <h3 class="font-bold text-slate-900 text-base mb-2">Izinkan Sumber Tidak Dikenal</h3>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  Buka file APK yang selesai diunduh. Jika muncul jendela perizinan, aktifkan centang <span class="font-semibold text-slate-800">"Izinkan pemasangan aplikasi dari sumber ini"</span> pada menu Pengaturan HP Anda.
                 </p>
               </div>
             </div>
 
             <!-- Step 3 -->
-            <div class="flex items-start space-x-4">
-              <div class="w-8 h-8 rounded-full bg-primary text-white font-extrabold flex items-center justify-center flex-shrink-0 text-sm shadow-md shadow-primary/20">
-                3
-              </div>
+            <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex flex-col justify-between">
               <div>
-                <h3 class="font-bold text-slate-900 text-sm mb-1">Pasang & Mulai Transaksi</h3>
-                <p class="text-xs text-slate-600 leading-relaxed">
-                  Tekan <span class="font-semibold text-slate-800">"Install"</span>. Setelah selesai, buka aplikasi Gampang Beres dan daftarkan nomor HP Anda. Langsung aktif sebagai Reseller!
+                <div class="w-9 h-9 rounded-xl bg-primary text-white font-black flex items-center justify-center text-sm shadow-md shadow-primary/20 mb-4">
+                  3
+                </div>
+                <h3 class="font-bold text-slate-900 text-base mb-2">Pasang & Mulai Transaksi</h3>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  Tekan <span class="font-semibold text-slate-800">"Install"</span> dan tunggu beberapa detik. Buka aplikasi Gampang Beres dan daftarkan nomor HP Anda untuk langsung menikmati harga reseller!
                 </p>
               </div>
             </div>
           </div>
 
           <!-- Need Help Box -->
-          <div class="mt-8 p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+          <div class="mt-8 p-5 rounded-2xl bg-primary/5 border border-primary/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div class="flex items-center space-x-3">
-              <HelpCircle class="w-5 h-5 text-slate-400" />
-              <span class="text-xs font-medium text-slate-600">Bingung saat install? Tim kami siap memandu Anda.</span>
+              <HelpCircle class="w-6 h-6 text-primary flex-shrink-0" />
+              <div>
+                <p class="text-sm font-bold text-slate-900">Perlu Bantuan Saat Pemasangan?</p>
+                <p class="text-xs text-slate-600">Customer Service kami siap memandu Anda langkah demi langkah melalui WhatsApp.</p>
+              </div>
             </div>
-            <a 
-              href={whatsappUrl} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              class="text-xs font-bold text-primary hover:underline whitespace-nowrap ml-2"
+            <button 
+              type="button"
+              id="trigger-guide-whatsapp-btn"
+              class="inline-flex items-center space-x-2 bg-primary hover:bg-primary-dark text-white text-xs font-bold px-5 py-3 rounded-xl transition-colors shadow-md shadow-primary/20 whitespace-nowrap"
             >
-              Pandu Saya →
-            </a>
+              <span>Hubungi CS WhatsApp</span>
+              <ChevronRight class="w-4 h-4" />
+            </button>
           </div>
         </div>
 
-        <!-- Release Notes / Changelog (5 cols) -->
-        <div class="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center space-x-3 mb-6">
-              <div class="w-10 h-10 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center">
-                <Sparkles class="w-5 h-5" />
+        <!-- Section 2: Catatan Pembaruan (Bawah) -->
+        <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-slate-100">
+          <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-100">
+            <div class="flex items-center space-x-3">
+              <div class="w-12 h-12 rounded-2xl bg-secondary/10 text-secondary flex items-center justify-center">
+                <Sparkles class="w-6 h-6" />
               </div>
               <div>
-                <h2 class="text-xl font-bold text-slate-900">Catatan Pembaruan</h2>
-                <p class="text-xs text-slate-500">Peningkatan versi terbaru</p>
+                <h2 class="text-2xl font-bold text-slate-900">Catatan Pembaruan Sistem</h2>
+                <p class="text-sm text-slate-500">Pembaruan performa, stabilitas, dan fitur terbaru pada rilis ini</p>
               </div>
             </div>
+            <span class="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700">
+              Versi {version}
+            </span>
+          </div>
 
-            {message && (
-              <div class="mb-4 p-3.5 rounded-2xl bg-amber-50 border border-amber-100">
-                <p id="app-message" class="text-xs text-amber-900 font-medium italic">
-                  "{message}"
-                </p>
+          {message && (
+            <div class="mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-100">
+              <p id="app-message" class="text-sm text-amber-900 font-medium italic">
+                "{message}"
+              </p>
+            </div>
+          )}
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="changelog-list">
+            {displayChangelog.map((item) => (
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-start space-x-3">
+                <CheckCircle2 class="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                <span class="text-sm text-slate-700 leading-relaxed font-medium">{item}</span>
               </div>
-            )}
-
-            <ul id="changelog-list" class="space-y-3">
-              {displayChangelog.map((item) => (
-                <li class="text-xs text-slate-700 flex items-start space-x-2.5">
-                  <CheckCircle2 class="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                  <span class="leading-relaxed">{item}</span>
-                </li>
-              ))}
-            </ul>
+            ))}
           </div>
 
           <!-- Security Stamp -->
-          <div class="mt-8 pt-6 border-t border-slate-100 flex items-center space-x-3 text-slate-400 text-xs">
-            <ShieldCheck class="w-4 h-4 text-emerald-600" />
-            <span>Digital Signature terverifikasi oleh server Gampang Beres</span>
+          <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between text-slate-400 text-xs">
+            <div class="flex items-center space-x-2">
+              <ShieldCheck class="w-4 h-4 text-emerald-600" />
+              <span>Digital Signature terverifikasi aman oleh server Gampang Beres</span>
+            </div>
+            <span>Build Status: Production Ready</span>
           </div>
         </div>
 
@@ -278,6 +287,7 @@ const displayChangelog = changelogItems.length > 0 ? changelogItems : defaultHig
     </div>
   </main>
   <Footer />
+  <WhatsAppFloating />
 
   <script>
     import { getAppStatus } from '../lib/api';
@@ -292,6 +302,18 @@ const displayChangelog = changelogItems.length > 0 ? changelogItems : defaultHig
       const statusMessage = document.getElementById('status-message');
       const countdownTimer = document.getElementById('countdown-timer');
       const progressBar = document.getElementById('progress-bar');
+
+      // Helper to open Floating WhatsApp menu
+      const openWhatsAppMenu = () => {
+        const waMenu = document.getElementById('whatsapp-menu');
+        if (waMenu) {
+          waMenu.classList.add('active');
+          waMenu.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+      };
+
+      document.getElementById('open-whatsapp-help-btn')?.addEventListener('click', openWhatsAppMenu);
+      document.getElementById('trigger-guide-whatsapp-btn')?.addEventListener('click', openWhatsAppMenu);
 
       // 1. Fetch real-time status
       try {
@@ -326,13 +348,13 @@ const displayChangelog = changelogItems.length > 0 ? changelogItems : defaultHig
               if (items.length > 0) {
                 changelogEl.innerHTML = '';
                 items.forEach((itemText) => {
-                  const li = document.createElement('li');
-                  li.className = 'text-xs text-slate-700 flex items-start space-x-2.5';
-                  li.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle-2 w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                    <span class="leading-relaxed">${itemText}</span>
+                  const card = document.createElement('div');
+                  card.className = 'p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-start space-x-3';
+                  card.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle-2 w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span class="text-sm text-slate-700 leading-relaxed font-medium">${itemText}</span>
                   `;
-                  changelogEl.appendChild(li);
+                  changelogEl.appendChild(card);
                 });
               }
             }
@@ -369,14 +391,14 @@ const displayChangelog = changelogItems.length > 0 ? changelogItems : defaultHig
             
             // Update UI after triggered
             if (statusMessage) {
-              statusMessage.innerHTML = '🎉 Download telah dimulai! Periksa folder unduhan Anda.';
+              statusMessage.textContent = 'Proses unduh sedang berjalan. Periksa folder unduhan Anda.';
             }
             if (buttonLabel) {
               buttonLabel.textContent = 'Unduh Ulang File APK';
             }
           } else {
             if (statusMessage) {
-              statusMessage.innerHTML = 'Silakan klik tombol di bawah untuk mulai mengunduh APK.';
+              statusMessage.textContent = 'Silakan klik tombol di bawah untuk mulai mengunduh APK.';
             }
           }
         }
@@ -387,7 +409,7 @@ const displayChangelog = changelogItems.length > 0 ? changelogItems : defaultHig
         downloadStarted = true;
         clearInterval(interval);
         if (statusMessage) {
-          statusMessage.innerHTML = '🎉 Download telah dimulai!';
+          statusMessage.textContent = 'Proses unduh sedang berjalan. Periksa folder unduhan Anda.';
         }
         if (buttonLabel) {
           buttonLabel.textContent = 'Unduh Ulang File APK';
