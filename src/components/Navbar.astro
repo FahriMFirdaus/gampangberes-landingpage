@@ -1,41 +1,78 @@
 ---
-import { Menu, X } from 'lucide-astro';
+import { Menu, X, Sparkles } from 'lucide-astro';
 import { getAppStatus } from '../lib/api';
 
 const appStatus = await getAppStatus();
 const downloadUrl = '/download';
 ---
 
-<nav class="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b border-slate-100">
+<nav id="main-navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-white/70 backdrop-blur-md border-b border-slate-100/80">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-20 items-center">
       <!-- Logo -->
       <div class="flex-shrink-0 flex items-center">
-        <a href="/#beranda" class="flex items-center space-x-2">
-          <img src="/images/logo/logo-nobg.webp" alt="Gampang Beres Logo" class="h-12 w-auto" width="168" height="48" />
-          <span class="text-2xl font-extrabold text-primary">Gampang<span class="text-secondary">Beres</span></span>
+        <a href="/#beranda" class="flex items-center space-x-3 group">
+          <img 
+            src="/images/logo/logo-nobg.webp" 
+            alt="Gampang Beres Logo" 
+            class="h-11 w-11 object-contain transition-transform duration-300 group-hover:scale-105" 
+            width="44" 
+            height="44" 
+          />
+          <span class="text-2xl font-extrabold tracking-tight text-primary">
+            Gampang<span class="text-secondary">Beres</span>
+          </span>
         </a>
       </div>
 
-      <!-- Desktop Menu -->
-      <div class="hidden md:flex items-center space-x-8">
-        <a href="/#beranda" class="text-sm font-medium text-slate-600 hover:text-primary transition-colors">Beranda</a>
-        <a href="/#layanan" class="text-sm font-medium text-slate-600 hover:text-primary transition-colors">Layanan</a>
-        <a href="/#fitur" class="text-sm font-medium text-slate-600 hover:text-primary transition-colors">Fitur</a>
-        <a href="/#kemitraan" class="text-sm font-medium text-slate-600 hover:text-primary transition-colors">Kemitraan</a>
-        <a href="/#faq" class="text-sm font-medium text-slate-600 hover:text-primary transition-colors">FAQ</a>
+      <!-- Desktop Menu with Active Pill Styling -->
+      <div class="hidden md:flex items-center space-x-1 lg:space-x-2">
         <a 
-          id="desktop-download-link"
-          href={downloadUrl} 
-          class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all transform hover:scale-105 shadow-lg shadow-primary/20"
+          href="/#beranda" 
+          class="nav-link px-3.5 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-primary hover:bg-slate-50/80 transition-all"
         >
-          Download APK
+          Beranda
         </a>
+        <a 
+          href="/#layanan" 
+          class="nav-link px-3.5 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-primary hover:bg-slate-50/80 transition-all"
+        >
+          Layanan
+        </a>
+        <a 
+          href="/#fitur" 
+          class="nav-link px-3.5 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-primary hover:bg-slate-50/80 transition-all"
+        >
+          Fitur
+        </a>
+        <a 
+          href="/#kemitraan" 
+          class="nav-link px-3.5 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-primary hover:bg-slate-50/80 transition-all"
+        >
+          Kemitraan
+        </a>
+        <a 
+          href="/#faq" 
+          class="nav-link px-3.5 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-primary hover:bg-slate-50/80 transition-all"
+        >
+          FAQ
+        </a>
+        
+        <div class="pl-4">
+          <a 
+            id="desktop-download-link"
+            href={downloadUrl} 
+            class="inline-flex items-center space-x-2 bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-full text-sm font-bold transition-all transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/25 active:translate-y-0"
+          >
+            <span>Download APK</span>
+            <Sparkles class="w-4 h-4" />
+          </a>
+        </div>
       </div>
 
       <!-- Mobile Menu Button -->
       <div class="md:hidden flex items-center">
-        <button id="mobile-menu-button" class="text-slate-600 hover:text-primary p-2" aria-label="Buka menu navigasi">
+        <button id="mobile-menu-button" class="text-slate-700 hover:text-primary p-2.5 rounded-xl hover:bg-slate-100 transition-colors" aria-label="Buka menu navigasi">
           <Menu class="w-6 h-6" id="menu-icon" />
           <X class="w-6 h-6 hidden" id="close-icon" />
         </button>
@@ -44,30 +81,48 @@ const downloadUrl = '/download';
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-6 space-y-2">
-    <a href="/#beranda" class="block px-3 py-4 text-base font-medium text-slate-600 hover:text-primary hover:bg-slate-50 rounded-lg">Beranda</a>
-    <a href="/#layanan" class="block px-3 py-4 text-base font-medium text-slate-600 hover:text-primary hover:bg-slate-50 rounded-lg">Layanan</a>
-    <a href="/#fitur" class="block px-3 py-4 text-base font-medium text-slate-600 hover:text-primary hover:bg-slate-50 rounded-lg">Fitur</a>
-    <a href="/#kemitraan" class="block px-3 py-4 text-base font-medium text-slate-600 hover:text-primary hover:bg-slate-50 rounded-lg">Kemitraan</a>
-    <a href="/#faq" class="block px-3 py-4 text-base font-medium text-slate-600 hover:text-primary hover:bg-slate-50 rounded-lg">FAQ</a>
-    <div class="pt-4 px-3">
+  <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-xl border-b border-slate-100 px-4 pt-2 pb-6 space-y-1 shadow-xl">
+    <a href="/#beranda" class="mobile-nav-link block px-4 py-3 text-base font-semibold text-slate-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-colors">Beranda</a>
+    <a href="/#layanan" class="mobile-nav-link block px-4 py-3 text-base font-semibold text-slate-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-colors">Layanan</a>
+    <a href="/#fitur" class="mobile-nav-link block px-4 py-3 text-base font-semibold text-slate-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-colors">Fitur</a>
+    <a href="/#kemitraan" class="mobile-nav-link block px-4 py-3 text-base font-semibold text-slate-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-colors">Kemitraan</a>
+    <a href="/#faq" class="mobile-nav-link block px-4 py-3 text-base font-semibold text-slate-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-colors">FAQ</a>
+    <div class="pt-4 px-2">
       <a 
         id="mobile-download-link"
         href={downloadUrl} 
-        class="block w-full text-center bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-xl text-base font-bold shadow-lg shadow-primary/20"
+        class="flex items-center justify-center space-x-2 w-full text-center bg-primary hover:bg-primary-dark text-white px-6 py-3.5 rounded-xl text-base font-bold shadow-lg shadow-primary/25"
       >
-        Download APK
+        <span>Download Aplikasi (APK)</span>
+        <Sparkles class="w-4 h-4" />
       </a>
     </div>
   </div>
 </nav>
 
 <script>
+  const navbar = document.getElementById('main-navbar');
   const mobileMenuButton = document.getElementById('mobile-menu-button');
   const mobileMenu = document.getElementById('mobile-menu');
   const menuIcon = document.getElementById('menu-icon');
   const closeIcon = document.getElementById('close-icon');
 
+  // Dynamic Scroll Effect (Transparent on Top, Blurred Solid on Scroll)
+  const handleScroll = () => {
+    if (!navbar) return;
+    if (window.scrollY > 20) {
+      navbar.classList.add('bg-white/95', 'shadow-sm', 'border-slate-100');
+      navbar.classList.remove('bg-white/70', 'border-slate-100/80');
+    } else {
+      navbar.classList.remove('bg-white/95', 'shadow-sm');
+      navbar.classList.add('bg-white/70', 'border-slate-100/80');
+    }
+  };
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll();
+
+  // Mobile menu toggle
   mobileMenuButton?.addEventListener('click', () => {
     mobileMenu?.classList.toggle('hidden');
     menuIcon?.classList.toggle('hidden');
@@ -79,7 +134,6 @@ const downloadUrl = '/download';
   mobileLinks?.forEach(link => {
     link.addEventListener('click', () => {
       const href = link.getAttribute('href');
-      // Only hide menu immediately for internal hash links
       if (href && (href.startsWith('#') || href.includes('/#'))) {
         mobileMenu?.classList.add('hidden');
         menuIcon?.classList.remove('hidden');
@@ -87,4 +141,33 @@ const downloadUrl = '/download';
       }
     });
   });
+
+  // ScrollSpy for active nav link
+  const sections = document.querySelectorAll('section[id]');
+  const desktopLinks = document.querySelectorAll('.nav-link');
+
+  const updateActiveSection = () => {
+    const scrollPos = window.scrollY + 120;
+    sections.forEach(section => {
+      const top = (section as HTMLElement).offsetTop;
+      const height = (section as HTMLElement).offsetHeight;
+      const id = section.getAttribute('id');
+
+      if (scrollPos >= top && scrollPos < top + height) {
+        desktopLinks.forEach(link => {
+          const href = link.getAttribute('href');
+          if (href?.includes(`#${id}`)) {
+            link.classList.add('text-primary', 'bg-primary/10', 'font-bold');
+            link.classList.remove('text-slate-600');
+          } else {
+            link.classList.remove('text-primary', 'bg-primary/10', 'font-bold');
+            link.classList.add('text-slate-600');
+          }
+        });
+      }
+    });
+  };
+
+  window.addEventListener('scroll', updateActiveSection, { passive: true });
+  updateActiveSection();
 </script>
