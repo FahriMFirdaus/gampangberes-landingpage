@@ -65,8 +65,6 @@ const isMaintenance = appStatus?.maintenance_mode || false;
             <div id="server-status-indicator" class="w-2 h-2 rounded-full bg-slate-500"></div>
             <span id="server-status-text" class="text-sm font-semibold text-slate-300">Memeriksa...</span>
           </div>
-          <!-- Response time: hanya tampil jika server bisa dihubungi -->
-          <p id="server-response-time" class="text-xs text-slate-500 hidden pl-5"></p>
           <p id="footer-version" class={`text-xs text-slate-300 ${!version && 'hidden'}`}>Versi: {version}</p>
         </div>
       </div>
