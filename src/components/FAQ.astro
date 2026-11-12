@@ -1,5 +1,5 @@
 ---
-import { ChevronDown } from 'lucide-astro';
+import { ChevronDown, HelpCircle } from 'lucide-astro';
 import { getAppStatus, formatCurrency } from '../lib/api';
 
 const appStatus = await getAppStatus();
@@ -10,11 +10,23 @@ const minWithdrawal = formatCurrency(appStatus?.min_withdrawal) || 'Rp 20.000';
 const faqs = [
   {
     question: 'Apakah aplikasi Gampang Beres aman digunakan?',
-    answer: 'Sangat aman. Kami menggunakan enkripsi standar industri HTTPS/TLS, autentikasi sesi aman, dan perlindungan PIN 6-digit untuk setiap eksekusi transaksi atau penarikan. Saldo tersimpan aman di database terproteksi dan setiap mutasi tercatat transparan detik per detik.',
+    answer: 'Sangat aman. Kami menggunakan enkripsi standar industri HTTPS/TLS, autentikasi sesi aman, dan perlindungan PIN 6-digit untuk setiap eksekusi transaksi atau penarikan. Saldo tersimpan aman di sistem terproteksi dan setiap mutasi tercatat transparan detik per detik.',
+  },
+  {
+    question: 'Bagaimana jika transaksi gagal atau nomor tujuan salah?',
+    answer: 'Jika transaksi berstatus gagal dari provider atau nomor tidak valid, <strong>saldo Anda akan otomatis dikembalikan 100% secara instan (Auto-Refund)</strong> ke akun tanpa potongan apa pun. Anda juga bisa menekan tombol Bantuan Komplain langsung dari struk transaksi untuk chat dengan Customer Service kami.',
+  },
+  {
+    question: 'Apa itu fitur Jalur Hemat dan bagaimana cara kerjanya?',
+    answer: 'Jalur Hemat adalah sistem cerdas Gampang Beres yang otomatis memilih jalur supplier termurah dari multi-biller. Jika sistem menemukan harga modal yang lebih murah dari estimasi awal, <strong>selisih uangnya akan langsung dikembalikan otomatis ke saldo Anda</strong>. Makin sering transaksi, makin banyak hematnya!',
   },
   {
     question: 'Bagaimana cara mendaftar dan apa bedanya Reseller vs Agen?',
     answer: `Semua pengguna baru otomatis terdaftar gratis sebagai Reseller dengan minimal deposit mulai dari <span id="dynamic-faq-min-deposit-reseller">${minDepositReseller}</span>. Saat Anda rutin bertransaksi atau memiliki saldo <span id="dynamic-faq-min-deposit-agen">${minDepositAgen}</span>, Anda bisa langsung mengajukan upgrade ke status <strong>Mitra Agen</strong> dari menu Bisnis aplikasi untuk menikmati harga wholesale termurah dan fitur transfer saldo.`,
+  },
+  {
+    question: 'Apakah bisa mendapatkan komisi dari Kode Referal / Downline?',
+    answer: 'Bisa banget! Setiap pengguna memiliki Kode Referal unik di aplikasi. Bagikan kode tersebut ke rekan, tetangga, atau jaringan konter Anda. Setiap kali downline bertransaksi, <strong>komisi pasif otomatis masuk ke saldo Anda</strong> dan bisa digunakan transaksi kembali atau dicairkan ke rekening.',
   },
   {
     question: 'Metode deposit apa saja yang didukung?',
@@ -22,7 +34,7 @@ const faqs = [
   },
   {
     question: 'Apakah bisa cetak struk untuk pelanggan konter/warung?',
-    answer: 'Bisa banget! Gampang Beres mendukung cetak struk fisik ke printer thermal Bluetooth (ukuran kertas 58mm/80mm) dan berbagi struk digital lewat WhatsApp/PDF. Anda bebas mengedit nama toko, alamat, catatan kaki, hingga menaikkan harga jual sesuai keuntungan yang Anda inginkan. Struk digital juga memiliki link verifikasi QR Code resmi.',
+    answer: 'Bisa banget! Gampang Beres mendukung cetak struk fisik ke printer thermal Bluetooth (ukuran kertas 58mm/80mm) dan berbagi struk digital lewat WhatsApp/PDF. Anda bebas mengedit nama toko, alamat, catatan kaki, hingga menaikkan harga jual sesuai keuntungan yang Anda inginkan. Struk digital juga memiliki link verifikasi QR Code resmi (cek.gampangberes.biz.id).',
   },
   {
     question: 'Berapa minimal penarikan saldo (withdrawal)?',
@@ -36,11 +48,15 @@ const faqs = [
 ---
 
 <section id="faq" class="py-24 bg-slate-50">
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
-      <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Pertanyaan yang Sering Diajukan</h2>
-      <p class="text-lg text-slate-600">
-        Punya pertanyaan lain? Hubungi Customer Service kami via WhatsApp.
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-4">
+        <HelpCircle class="w-4 h-4" />
+        <span>Pusat Bantuan & FAQ</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Pertanyaan yang Sering Diajukan</h2>
+      <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
+        Semua informasi penting seputar keamanan, fitur unggulan, dan cara kerja aplikasi Gampang Beres.
       </p>
     </div>
 
@@ -51,8 +67,8 @@ const faqs = [
             class="faq-button flex items-center justify-between w-full p-6 text-left"
             data-index={index}
           >
-            <span class="text-lg font-bold text-slate-900 group-hover:text-primary transition-colors">{faq.question}</span>
-            <ChevronDown class="w-5 h-5 text-slate-400 group-hover:text-primary transition-transform duration-300 faq-icon" />
+            <span class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-primary transition-colors">{faq.question}</span>
+            <ChevronDown class="w-5 h-5 text-slate-400 group-hover:text-primary transition-transform duration-300 faq-icon flex-shrink-0 ml-4" />
           </button>
           <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
             <div class="p-6 pt-0 text-slate-600 leading-relaxed border-t border-slate-50 text-sm sm:text-base" set:html={faq.answer}>
@@ -87,10 +103,14 @@ const faqs = [
 
       // Toggle current FAQ
       if (answer) {
-        const isOpen = (answer as HTMLElement).style.maxHeight !== '' && 
-                       (answer as HTMLElement).style.maxHeight !== '0px';
-        (answer as HTMLElement).style.maxHeight = isOpen ? '0px' : '500px';
-        icon?.classList.toggle('rotate-180', !isOpen);
+        const isClosed = (answer as HTMLElement).style.maxHeight === '0px' || !(answer as HTMLElement).style.maxHeight;
+        if (isClosed) {
+          (answer as HTMLElement).style.maxHeight = `${answer.scrollHeight}px`;
+          icon?.classList.add('rotate-180');
+        } else {
+          (answer as HTMLElement).style.maxHeight = '0';
+          icon?.classList.remove('rotate-180');
+        }
       }
     });
   });
