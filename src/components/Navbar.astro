@@ -63,8 +63,6 @@ const downloadUrl = '/download';
 </nav>
 
 <script>
-  import { getAppStatus } from '../lib/api';
-
   const mobileMenuButton = document.getElementById('mobile-menu-button');
   const mobileMenu = document.getElementById('mobile-menu');
   const menuIcon = document.getElementById('menu-icon');
@@ -79,7 +77,7 @@ const downloadUrl = '/download';
   // Close menu when clicking hash links
   const mobileLinks = mobileMenu?.querySelectorAll('a');
   mobileLinks?.forEach(link => {
-    link.addEventListener('click', (e) => {
+    link.addEventListener('click', () => {
       const href = link.getAttribute('href');
       // Only hide menu immediately for internal hash links
       if (href && (href.startsWith('#') || href.includes('/#'))) {
@@ -89,22 +87,4 @@ const downloadUrl = '/download';
       }
     });
   });
-
-  // Update Download APK links dynamically
-  async function updateNavbarLinks() {
-    try {
-      const appStatus = await getAppStatus();
-      if (appStatus && appStatus.download_url) {
-        const desktopLink = document.getElementById('desktop-download-link') as HTMLAnchorElement;
-        const mobileLink = document.getElementById('mobile-download-link') as HTMLAnchorElement;
-        
-        if (desktopLink) desktopLink.href = appStatus.download_url;
-        if (mobileLink) mobileLink.href = appStatus.download_url;
-      }
-    } catch (error) {
-      console.error('Failed to update navbar links:', error);
-    }
-  }
-
-  updateNavbarLinks();
 </script>

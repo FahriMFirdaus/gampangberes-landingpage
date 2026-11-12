@@ -3,30 +3,34 @@ import { ChevronDown } from 'lucide-astro';
 import { getAppStatus, formatCurrency } from '../lib/api';
 
 const appStatus = await getAppStatus();
-const minDepositReseller = formatCurrency(appStatus?.min_deposit_reseller) || 'Sesuai Ketentuan';
-const minDepositAgen = formatCurrency(appStatus?.min_deposit_agen) || 'Sesuai Ketentuan';
-const minWithdrawal = formatCurrency(appStatus?.min_withdrawal) || 'Sesuai Ketentuan';
+const minDepositReseller = formatCurrency(appStatus?.min_deposit_reseller) || 'Rp 10.000';
+const minDepositAgen = formatCurrency(appStatus?.min_deposit_agen) || 'Rp 100.000';
+const minWithdrawal = formatCurrency(appStatus?.min_withdrawal) || 'Rp 20.000';
 
 const faqs = [
   {
     question: 'Apakah aplikasi Gampang Beres aman digunakan?',
-    answer: 'Sangat aman. Kami menggunakan enkripsi standar industri untuk melindungi data Anda. Saldo Anda tersimpan di sistem kami dengan keamanan berlapis dan setiap transaksi memiliki catatan mutasi yang transparan.',
+    answer: 'Sangat aman. Kami menggunakan enkripsi standar industri HTTPS/TLS, autentikasi sesi aman, dan perlindungan PIN 6-digit untuk setiap eksekusi transaksi atau penarikan. Saldo tersimpan aman di database terproteksi dan setiap mutasi tercatat transparan detik per detik.',
   },
   {
-    question: 'Bagaimana cara menginstall APK secara manual?',
-    answer: 'Setelah download, buka file APK tersebut. Jika muncul peringatan "Install dari sumber tidak dikenal", izinkan di pengaturan HP Anda. Gampang Beres aman dan bebas dari malware.',
+    question: 'Bagaimana cara mendaftar dan apa bedanya Reseller vs Agen?',
+    answer: `Semua pengguna baru otomatis terdaftar gratis sebagai Reseller dengan minimal deposit mulai dari <span id="dynamic-faq-min-deposit-reseller">${minDepositReseller}</span>. Saat Anda rutin bertransaksi atau memiliki saldo <span id="dynamic-faq-min-deposit-agen">${minDepositAgen}</span>, Anda bisa langsung mengajukan upgrade ke status <strong>Mitra Agen</strong> dari menu Bisnis aplikasi untuk menikmati harga wholesale termurah dan fitur transfer saldo.`,
   },
   {
-    question: 'Apa perbedaan antara Reseller dan Agen?',
-    answer: `Reseller adalah tingkatan dasar untuk pemakaian pribadi dengan minimal deposit ${minDepositReseller}. Agen memiliki harga dasar yang lebih murah (wholesale) dengan minimal deposit awal ${minDepositAgen}, sangat cocok untuk bisnis konter pulsa.`,
+    question: 'Metode deposit apa saja yang didukung?',
+    answer: 'Kami menyediakan fitur Smart Deposit: (1) <strong>QRIS Otomatis 24 Jam</strong> yang bisa dibayar dari semua e-wallet (GoPay, OVO, Dana, ShopeePay) serta m-Banking dengan saldo masuk dalam hitungan detik. (2) <strong>Transfer GoPay Manual</strong> tanpa biaya potongan MDR yang sangat menguntungkan untuk nominal besar.',
   },
   {
-    question: 'Metode deposit apa saja yang tersedia?',
-    answer: `Saat ini kami fokus pada kemudahan dan kecepatan, sehingga deposit hanya tersedia melalui QRIS. Anda bisa membayar menggunakan aplikasi pembayaran digital apa pun (Dana, OVO, GoPay, ShopeePay) atau Mobile Banking yang mendukung scan QRIS. Saldo akan masuk secara otomatis dalam hitungan detik 24 jam non-stop.`,
+    question: 'Apakah bisa cetak struk untuk pelanggan konter/warung?',
+    answer: 'Bisa banget! Gampang Beres mendukung cetak struk fisik ke printer thermal Bluetooth (ukuran kertas 58mm/80mm) dan berbagi struk digital lewat WhatsApp/PDF. Anda bebas mengedit nama toko, alamat, catatan kaki, hingga menaikkan harga jual sesuai keuntungan yang Anda inginkan. Struk digital juga memiliki link verifikasi QR Code resmi.',
   },
   {
     question: 'Berapa minimal penarikan saldo (withdrawal)?',
-    answer: `Anda dapat menarik kembali saldo Anda ke rekening bank dengan minimal penarikan sebesar ${minWithdrawal}. Proses penarikan dilakukan dengan cepat pada jam operasional.`,
+    answer: `Anda dapat menarik kembali saldo Anda ke rekening bank atau e-wallet terdaftar dengan batas minimal <span id="dynamic-min-withdrawal">${minWithdrawal}</span>. Penarikan diproses cepat dan aman ke rekening atas nama Anda sendiri.`,
+  },
+  {
+    question: 'Bagaimana cara menginstall APK secara manual?',
+    answer: 'Setelah klik tombol Download APK, buka file APK yang telah terunduh di HP Anda. Jika muncul peringatan keamanan "Install dari sumber tidak dikenal" (Unknown Sources), cukup centang izinkan untuk browser Anda. File APK kami resmi dan bebas dari virus/malware.',
   },
 ];
 ---
@@ -51,8 +55,7 @@ const faqs = [
             <ChevronDown class="w-5 h-5 text-slate-400 group-hover:text-primary transition-transform duration-300 faq-icon" />
           </button>
           <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-            <div class="p-6 pt-0 text-slate-600 leading-relaxed border-t border-slate-50">
-              {faq.answer}
+            <div class="p-6 pt-0 text-slate-600 leading-relaxed border-t border-slate-50 text-sm sm:text-base" set:html={faq.answer}>
             </div>
           </div>
         </div>

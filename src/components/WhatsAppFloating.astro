@@ -132,15 +132,23 @@ const contacts = await getWhatsAppContacts();
           anchor.rel = 'noopener noreferrer';
           anchor.className = 'flex items-center space-x-4 p-4 rounded-2xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100 group';
           
-          anchor.innerHTML = `
-            <div class="w-12 h-12 bg-[#25D366]/10 text-[#25D366] rounded-xl flex items-center justify-center group-hover:bg-[#25D366] group-hover:text-white transition-all">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone w-6 h-6"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            </div>
-            <div>
-              <span class="block font-bold text-slate-900">Customer Service ${index + 1}</span>
-              <span class="text-sm text-slate-500">${contact.number}</span>
-            </div>
-          `;
+          const iconDiv = document.createElement('div');
+          iconDiv.className = 'w-12 h-12 bg-[#25D366]/10 text-[#25D366] rounded-xl flex items-center justify-center group-hover:bg-[#25D366] group-hover:text-white transition-all';
+          iconDiv.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone w-6 h-6"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
+          
+          const textDiv = document.createElement('div');
+          const titleSpan = document.createElement('span');
+          titleSpan.className = 'block font-bold text-slate-900';
+          titleSpan.textContent = `Customer Service ${index + 1}`;
+          const numberSpan = document.createElement('span');
+          numberSpan.className = 'text-sm text-slate-500';
+          numberSpan.textContent = contact.number;
+
+          textDiv.appendChild(titleSpan);
+          textDiv.appendChild(numberSpan);
+          anchor.appendChild(iconDiv);
+          anchor.appendChild(textDiv);
+
           contactsContainer.appendChild(anchor);
         });
       }

@@ -1,1 +1,7 @@
 node_modules
+.astro
+dist
+.env
+.env.*
+api-docs.json
+.DS_Store

@@ -38,31 +38,3 @@ const fileSize = appStatus?.file_size || '';
     </div>
   </div>
 </section>
-
-<script>
-  import { getAppStatus } from '../lib/api';
-
-  async function updateBottomCTA() {
-    try {
-      const appStatus = await getAppStatus();
-      if (appStatus) {
-        if (appStatus.download_url) {
-          const downloadLink = document.getElementById('bottom-download-link') as HTMLAnchorElement;
-          if (downloadLink) downloadLink.href = appStatus.download_url;
-        }
-        
-        if (appStatus.file_size) {
-          const sizeText = document.getElementById('bottom-filesize-text');
-          if (sizeText) {
-            sizeText.textContent = `• Ukuran file ${appStatus.file_size}`;
-            sizeText.classList.remove('hidden');
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Failed to update BottomCTA:', error);
-    }
-  }
-
-  updateBottomCTA();
-</script>

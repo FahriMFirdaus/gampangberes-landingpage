@@ -1,6 +1,4 @@
 ---
-import SplashScreen from '../components/SplashScreen.astro';
-
 interface Props {
 	title: string;
 	description?: string;
@@ -90,7 +88,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://gampangb
 		</style>
 	</head>
 	<body class="antialiased text-slate-900">
-		<SplashScreen />
 		<slot />
 
 		<!-- 
@@ -101,7 +98,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://gampangb
 		  tanpa user harus refresh manual.
 		-->
 		<script>
-		  import { getAppStatus, invalidateAppStatusCache, checkServerHealth } from '../lib/api';
+		  import { getAppStatus, invalidateAppStatusCache, checkServerHealth, formatCurrency } from '../lib/api';
 
 		  /** Update indikator status server dengan pengecekan nyata ke server */
 		  async function updateServerStatus() {
@@ -157,25 +154,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://gampangb
 		      const appStatus = await getAppStatus();
 		      if (!appStatus) return;
 
-		      // ── Download URL ──────────────────────────────────────────────────
+		      // ── Download URL Khusus Direct Download Button ─────────────────────
+		      // Catatan: Tombol hero/navbar/bottom tetap mengarah ke /download agar
+		      // pengunjung melihat panduan & changelog. Hanya manual-download-link di /download
+		      // yang menggunakan direct download_url.
 		      if (appStatus.download_url) {
-		        const downloadIds = [
-		          'hero-download-link',
-		          'bottom-download-link',
-		          'navbar-download-link',
-		          'desktop-download-link',
-		          'mobile-download-link',
-		          'manual-download-link',
-		        ];
-		        downloadIds.forEach(id => {
-		          const el = document.getElementById(id) as HTMLAnchorElement | null;
-		          if (el) el.href = appStatus.download_url;
-		        });
+		        const manualDownloadEl = document.getElementById('manual-download-link') as HTMLAnchorElement | null;
+		        if (manualDownloadEl) manualDownloadEl.href = appStatus.download_url;
 		      }
 
 		      // ── WhatsApp / CS Link ────────────────────────────────────────────
 		      if (appStatus.contact_whatsapp) {
-		        const waIds = ['hero-whatsapp-link', 'footer-whatsapp-link'];
+		        const waIds = ['hero-whatsapp-link', 'footer-whatsapp-link', 'partnership-sales-link'];
 		        waIds.forEach(id => {
 		          const el = document.getElementById(id) as HTMLAnchorElement | null;
 		          if (el) el.href = appStatus.contact_whatsapp;
@@ -219,6 +209,31 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://gampangb
 		        }
 		        if (downloadSize) downloadSize.textContent = appStatus.file_size;
 		        if (downloadSizeContainer) downloadSizeContainer.classList.remove('hidden');
+		      }
+
+		      // ── Nominal Dinamis (Deposit & Penarikan) ──────────────────────────
+		      if (appStatus.min_deposit_reseller) {
+		        const formatted = formatCurrency(appStatus.min_deposit_reseller);
+		        const elReseller = document.getElementById('dynamic-min-deposit-reseller');
+		        const elFaqReseller = document.getElementById('dynamic-faq-min-deposit-reseller');
+		        const elFeatureReseller = document.getElementById('dynamic-feature-min-deposit-reseller');
+		        if (elReseller) elReseller.textContent = formatted;
+		        if (elFaqReseller) elFaqReseller.textContent = formatted;
+		        if (elFeatureReseller) elFeatureReseller.textContent = formatted;
+		      }
+
+		      if (appStatus.min_deposit_agen) {
+		        const formatted = formatCurrency(appStatus.min_deposit_agen);
+		        const elAgen = document.getElementById('dynamic-min-deposit-agen');
+		        const elFaqAgen = document.getElementById('dynamic-faq-min-deposit-agen');
+		        if (elAgen) elAgen.textContent = formatted;
+		        if (elFaqAgen) elFaqAgen.textContent = formatted;
+		      }
+
+		      if (appStatus.min_withdrawal) {
+		        const formatted = formatCurrency(appStatus.min_withdrawal);
+		        const elWithdrawal = document.getElementById('dynamic-min-withdrawal');
+		        if (elWithdrawal) elWithdrawal.textContent = formatted;
 		      }
 
 		    } catch (err) {

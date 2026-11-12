@@ -202,17 +202,6 @@ export async function getBanners() {
   }
 }
 
-export async function getAnnouncements() {
-  try {
-    const response = await fetch(`${API_BASE_URL}/announcements`);
-    if (!response.ok) return [];
-    const json = await response.json();
-    return json.success ? json.data : [];
-  } catch (error) {
-    return [];
-  }
-}
-
 export async function getTerms() {
   try {
     const response = await fetch(`${API_BASE_URL}/legal/terms`);

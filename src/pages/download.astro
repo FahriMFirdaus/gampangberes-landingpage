@@ -128,6 +128,39 @@ if (changelog) {
             if (sizeEl) sizeEl.textContent = appStatus.file_size;
             if (sizeContainer) sizeContainer.classList.remove('hidden');
           }
+          if (appStatus.message) {
+            const msgEl = document.getElementById('app-message');
+            if (msgEl) {
+              msgEl.textContent = `"${appStatus.message}"`;
+            }
+          }
+          if (appStatus.changelog) {
+            const changelogEl = document.getElementById('changelog-list');
+            if (changelogEl) {
+              let items: string[] = [];
+              if (Array.isArray(appStatus.changelog)) {
+                items = appStatus.changelog;
+              } else if (typeof appStatus.changelog === 'object') {
+                items = Object.values(appStatus.changelog).flat().map((i: any) => String(i));
+              }
+
+              if (items.length > 0) {
+                changelogEl.innerHTML = '';
+                items.forEach((itemText) => {
+                  const li = document.createElement('li');
+                  li.className = 'text-sm text-slate-600 flex items-start space-x-2';
+                  const bullet = document.createElement('span');
+                  bullet.className = 'text-secondary mt-1';
+                  bullet.textContent = '•';
+                  const textSpan = document.createElement('span');
+                  textSpan.textContent = itemText;
+                  li.appendChild(bullet);
+                  li.appendChild(textSpan);
+                  changelogEl.appendChild(li);
+                });
+              }
+            }
+          }
 
           if (latestDownloadUrl && latestDownloadUrl !== '#') {
             // Update the link href immediately

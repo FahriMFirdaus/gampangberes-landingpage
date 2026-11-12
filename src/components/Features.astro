@@ -1,27 +1,45 @@
 ---
-import { Rocket, Tag, ShieldCheck } from 'lucide-astro';
+import { Zap, ShieldCheck, Printer, QrCode, Sparkles, TrendingUp } from 'lucide-astro';
 import { getAppStatus, formatCurrency } from '../lib/api';
 
 const appStatus = await getAppStatus();
-const minDepositReseller = formatCurrency(appStatus?.min_deposit_reseller) || 'Sesuai Ketentuan';
+const minDepositReseller = formatCurrency(appStatus?.min_deposit_reseller) || 'Rp 10.000';
 
 const features = [
   {
-    icon: Rocket,
+    icon: Zap,
     title: 'Transaksi Secepat Kilat',
-    description: 'Terhubung langsung dengan server pusat untuk memastikan setiap transaksi selesai dalam hitungan detik.',
+    description: 'Terhubung langsung dengan multi-biller server pusat untuk memastikan setiap transaksi pulsa, paket data, dan tagihan sukses dalam hitungan detik.',
     color: 'bg-primary',
   },
   {
-    icon: Tag,
-    title: 'Harga Dasar Termurah',
-    description: `Nikmati harga reseller sejak hari pertama pendaftaran. Mulai dari ${minDepositReseller}, hemat untuk pribadi, untung untuk jualan.`,
+    icon: Sparkles,
+    title: 'Jalur Hemat Otomatis',
+    description: 'Sistem cerdas kami otomatis mencarikan supplier termurah dan mengembalikan selisih harga (auto-refund) jika ada opsi yang lebih hemat.',
     color: 'bg-secondary',
   },
   {
+    icon: Printer,
+    title: 'Cetak Struk Bluetooth & Custom Toko',
+    description: 'Cetak struk fisik via printer thermal Bluetooth atau bagikan struk digital via WhatsApp dengan nama toko, logo, dan harga jual yang bisa Anda atur sendiri.',
+    color: 'bg-emerald-600',
+  },
+  {
+    icon: QrCode,
+    title: 'Verifikasi Struk Digital Online',
+    description: 'Setiap struk digital dilengkapi QR Code verifikasi keaslian (cek.gampangberes.biz.id) sehingga pelanggan merasa aman dan percaya.',
+    color: 'bg-indigo-600',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Harga Reseller & Bangun Tim',
+    description: `Mulai deposit ringan dari <span id="dynamic-feature-min-deposit-reseller">${minDepositReseller}</span>. Dapatkan komisi referal pasif setiap kali jaringan downline Anda bertransaksi.`,
+    color: 'bg-amber-600',
+  },
+  {
     icon: ShieldCheck,
-    title: 'Aman & Transparan',
-    description: 'Saldo tersimpan aman dan setiap mutasi tercatat jelas. Keamanan data Anda adalah prioritas kami.',
+    title: 'Aman & Transparan Berlapis',
+    description: 'Dilengkapi PIN transaksi 6-digit, mutasi saldo realtime, smart deposit otomatis (QRIS 24/7 & Transfer Bebas MDR), dan CS responsif.',
     color: 'bg-primary-dark',
   },
 ];
@@ -30,21 +48,20 @@ const features = [
 <section id="fitur" class="py-24 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
-      <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Mengapa Memilih Gampang Beres?</h2>
+      <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Fitur Lengkap untuk Sukses Usaha Konter & Pribadi</h2>
       <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-        Kami menghadirkan platform yang memprioritaskan kecepatan, efisiensi biaya, dan keamanan tingkat tinggi.
+        Bukan sekadar aplikasi pulsa biasa. Kami rancang fitur profesional untuk memudahkan operasional usaha dan menghemat pengeluaran digital Anda.
       </p>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-12">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       {features.map((feature) => (
-        <div class="relative group">
-          <div class="mb-8 w-14 h-14 rounded-2xl flex items-center justify-center text-white transition-transform group-hover:scale-110 shadow-lg shadow-slate-200" class:list={[feature.color]}>
+        <div class="relative group p-8 rounded-3xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:border-slate-200 transition-all duration-300 hover:shadow-xl hover:shadow-slate-100">
+          <div class="mb-6 w-14 h-14 rounded-2xl flex items-center justify-center text-white transition-transform group-hover:scale-110 shadow-lg shadow-slate-200" class:list={[feature.color]}>
             <feature.icon class="w-7 h-7" />
           </div>
-          <h3 class="text-xl font-bold text-slate-900 mb-4">{feature.title}</h3>
-          <p class="text-slate-600 leading-relaxed">
-            {feature.description}
+          <h3 class="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
+          <p class="text-slate-600 leading-relaxed text-sm" set:html={feature.description}>
           </p>
         </div>
       ))}
