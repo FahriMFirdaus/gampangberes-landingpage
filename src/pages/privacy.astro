@@ -3,10 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { getPrivacy } from '../lib/api';
+import { defaultPrivacyContent } from '../lib/legalDefaults';
 
 const privacy = await getPrivacy();
 const title = privacy?.title || 'Kebijakan Privasi';
-const rawContent = privacy?.content || 'Kebijakan Privasi belum diatur oleh admin.';
+const rawContent = (privacy?.content && privacy.content !== 'Kebijakan Privasi belum diatur oleh admin.')
+  ? privacy.content
+  : defaultPrivacyContent;
 
 function formatContent(text: string) {
   if (!text) return '';
@@ -51,14 +54,14 @@ const content = formatContent(rawContent);
     async function loadPrivacy() {
       try {
         const privacy = await getPrivacy();
-        if (privacy) {
+        if (privacy && privacy.content && privacy.content !== 'Kebijakan Privasi belum diatur oleh admin.') {
           const titleEl = document.getElementById('legal-title');
           const contentEl = document.getElementById('legal-content');
           if (titleEl && privacy.title) {
             titleEl.textContent = privacy.title;
             document.title = `${privacy.title} - Gampang Beres`;
           }
-          if (contentEl && privacy.content) {
+          if (contentEl) {
             contentEl.innerHTML = formatText(privacy.content);
           }
         }

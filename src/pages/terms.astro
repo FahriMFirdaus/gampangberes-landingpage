@@ -3,10 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import { getTerms } from '../lib/api';
+import { defaultTermsContent } from '../lib/legalDefaults';
 
 const terms = await getTerms();
 const title = terms?.title || 'Syarat & Ketentuan';
-const rawContent = terms?.content || 'Syarat & Ketentuan belum diatur oleh admin.';
+const rawContent = (terms?.content && terms.content !== 'Syarat & Ketentuan belum diatur oleh admin.')
+  ? terms.content
+  : defaultTermsContent;
 
 function formatContent(text: string) {
   if (!text) return '';
@@ -51,14 +54,14 @@ const content = formatContent(rawContent);
     async function loadTerms() {
       try {
         const terms = await getTerms();
-        if (terms) {
+        if (terms && terms.content && terms.content !== 'Syarat & Ketentuan belum diatur oleh admin.') {
           const titleEl = document.getElementById('legal-title');
           const contentEl = document.getElementById('legal-content');
           if (titleEl && terms.title) {
             titleEl.textContent = terms.title;
             document.title = `${terms.title} - Gampang Beres`;
           }
-          if (contentEl && terms.content) {
+          if (contentEl) {
             contentEl.innerHTML = formatText(terms.content);
           }
         }
