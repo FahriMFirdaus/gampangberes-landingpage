@@ -7,31 +7,31 @@ const downloadUrl = '/download';
 const fileSize = appStatus?.file_size || '';
 ---
 
-<section class="py-24 bg-white">
+<section class="py-12 sm:py-16 lg:py-24 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="bg-primary rounded-[3rem] p-8 md:p-16 lg:p-24 text-center relative overflow-hidden shadow-2xl shadow-primary/40">
+    <div class="bg-primary rounded-3xl sm:rounded-[3rem] p-6 sm:p-12 lg:p-20 text-center relative overflow-hidden shadow-2xl shadow-primary/40">
       <!-- Decoration -->
       <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
       <div class="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full -ml-32 -mb-32 blur-3xl"></div>
       
       <div class="relative z-10 max-w-2xl mx-auto">
-        <h2 class="text-3xl sm:text-5xl font-extrabold text-white mb-8 leading-tight">
+        <h2 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-4 sm:mb-6 leading-tight">
           Siap Mengatur Tagihan dan Untung Maksimal?
         </h2>
-        <p class="text-xl text-white mb-12">
+        <p class="text-sm sm:text-base lg:text-xl text-white/90 mb-8 sm:mb-10 max-w-xl mx-auto">
           Bergabunglah dengan ribuan pengguna lainnya yang telah beralih ke cara pembayaran yang lebih gampang dan beres.
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a 
             id="bottom-download-link"
             href={downloadUrl} 
-            class="flex items-center space-x-3 bg-white text-primary px-10 py-5 rounded-2xl text-xl font-bold transition-all transform md:hover:scale-105 active:scale-95 md:hover:shadow-xl"
+            class="w-full sm:w-auto flex items-center justify-center space-x-3 bg-white text-primary px-6 sm:px-10 py-4 sm:py-5 rounded-2xl text-base sm:text-xl font-bold transition-all transform md:hover:scale-105 active:scale-95 md:hover:shadow-xl shadow-lg min-h-[52px]"
           >
-            <Download class="w-6 h-6 animate-bounce" />
+            <Download class="w-5 h-5 sm:w-6 sm:h-6 animate-bounce flex-shrink-0" />
             <span>Download APK Sekarang</span>
           </a>
         </div>
-        <p class="mt-6 text-slate-100 text-sm font-medium">
+        <p class="mt-6 text-slate-100 text-xs sm:text-sm font-medium">
           Mendukung Android 6.0 (Marshmallow) ke atas <span id="bottom-filesize-text" class={!fileSize ? 'hidden' : ''}>• Ukuran file {fileSize}</span>
         </p>
       </div>

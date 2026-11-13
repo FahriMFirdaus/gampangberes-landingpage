@@ -66,26 +66,26 @@ const features = [
 ];
 ---
 
-<section id="fitur" class="py-20 scroll-mt-6 bg-white">
+<section id="fitur" class="py-12 sm:py-16 lg:py-20 scroll-mt-6 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-4">
+    <div class="text-center mb-8 sm:mb-12">
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-3 sm:mb-4">
         <span>Solusi Usaha Modern</span>
       </div>
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Fitur Lengkap untuk Sukses Usaha Konter & Pribadi</h2>
-      <p class="text-base sm:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 mb-3 sm:mb-4">Fitur Lengkap untuk Sukses Usaha Konter & Pribadi</h2>
+      <p class="text-sm sm:text-base text-slate-600 max-w-3xl mx-auto leading-relaxed">
         Bukan sekadar aplikasi pulsa biasa. Kami rancang platform profesional yang memprioritaskan kecepatan transaksi, efisiensi modal, dan kemudahan operasional konter harian Anda.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
       {features.map((feature) => (
-        <div class="relative group p-6 sm:p-7 rounded-3xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:border-slate-200 transition-all duration-300 hover:shadow-xl hover:shadow-slate-100 flex flex-col justify-between">
+        <div class="relative group p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:border-slate-200 transition-all duration-300 hover:shadow-xl hover:shadow-slate-100 flex flex-col justify-between">
           <div>
-            <div class="mb-5 w-12 h-12 rounded-2xl flex items-center justify-center text-white transition-transform group-hover:scale-110 shadow-lg shadow-slate-200 flex-shrink-0" class:list={[feature.color]}>
+            <div class="mb-4 sm:mb-5 w-12 h-12 rounded-2xl flex items-center justify-center text-white transition-transform group-hover:scale-110 shadow-lg shadow-slate-200 flex-shrink-0" class:list={[feature.color]}>
               <feature.icon class="w-6 h-6" />
             </div>
-            <h3 class="text-lg font-bold text-slate-900 mb-2.5 leading-snug">{feature.title}</h3>
+            <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-2 leading-snug">{feature.title}</h3>
             <p class="text-slate-600 leading-relaxed text-xs sm:text-sm" set:html={feature.description}>
             </p>
           </div>

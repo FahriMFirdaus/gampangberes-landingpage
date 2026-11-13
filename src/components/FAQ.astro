@@ -47,31 +47,40 @@ const faqs = [
 ];
 ---
 
-<section id="faq" class="py-20 scroll-mt-6 bg-slate-50">
+<section id="faq" class="py-12 sm:py-16 lg:py-20 scroll-mt-6 bg-slate-50">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-4">
+    <div class="text-center mb-8 sm:mb-12">
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-3 sm:mb-4">
         <HelpCircle class="w-4 h-4" />
         <span>Pusat Bantuan & FAQ</span>
       </div>
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">Pertanyaan yang Sering Diajukan</h2>
-      <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
+      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 mb-3 sm:mb-4">Pertanyaan yang Sering Diajukan</h2>
+      <p class="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto">
         Semua informasi penting seputar keamanan, fitur unggulan, dan cara kerja aplikasi Gampang Beres.
       </p>
     </div>
 
-    <div class="space-y-4">
+    <div class="space-y-3 sm:space-y-4">
       {faqs.map((faq, index) => (
         <div class="group bg-white rounded-2xl border border-slate-100 overflow-hidden transition-all duration-300 hover:shadow-md">
           <button 
-            class="faq-button flex items-center justify-between w-full p-6 text-left"
+            type="button"
+            class="faq-button flex items-center justify-between w-full p-4 sm:p-6 text-left min-h-[52px]"
             data-index={index}
+            id={`faq-btn-${index}`}
+            aria-expanded="false"
+            aria-controls={`faq-answer-${index}`}
           >
-            <span class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-primary transition-colors">{faq.question}</span>
-            <ChevronDown class="w-5 h-5 text-slate-400 group-hover:text-primary transition-transform duration-300 faq-icon flex-shrink-0 ml-4" />
+            <span class="text-sm sm:text-lg font-bold text-slate-900 group-hover:text-primary transition-colors pr-2">{faq.question}</span>
+            <ChevronDown class="w-5 h-5 text-slate-400 group-hover:text-primary transition-transform duration-300 faq-icon flex-shrink-0 ml-3 sm:ml-4" />
           </button>
-          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-            <div class="p-6 pt-0 text-slate-600 leading-relaxed border-t border-slate-50 text-sm sm:text-base" set:html={faq.answer}>
+          <div 
+            id={`faq-answer-${index}`}
+            role="region"
+            aria-labelledby={`faq-btn-${index}`}
+            class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out"
+          >
+            <div class="p-4 pt-0 sm:p-6 sm:pt-0 text-slate-600 leading-relaxed border-t border-slate-50 text-xs sm:text-base" set:html={faq.answer}>
             </div>
           </div>
         </div>
@@ -100,6 +109,11 @@ const faqs = [
           el.classList.remove('rotate-180');
         }
       });
+      faqButtons.forEach(btn => {
+        if (btn !== button) {
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
 
       // Toggle current FAQ
       if (answer) {
@@ -107,9 +121,11 @@ const faqs = [
         if (isClosed) {
           (answer as HTMLElement).style.maxHeight = `${answer.scrollHeight}px`;
           icon?.classList.add('rotate-180');
+          button.setAttribute('aria-expanded', 'true');
         } else {
           (answer as HTMLElement).style.maxHeight = '0';
           icon?.classList.remove('rotate-180');
+          button.setAttribute('aria-expanded', 'false');
         }
       }
     });

@@ -24,41 +24,44 @@ const steps = [
 ];
 ---
 
-<section class="py-24 bg-white overflow-hidden">
+<section class="py-12 sm:py-16 lg:py-24 bg-white overflow-hidden">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex flex-col lg:flex-row items-center justify-between gap-16">
+    <div class="flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-12 lg:gap-16">
       
       <!-- Sisi Kiri: 3 Langkah Navigasi Interaktif -->
       <div class="lg:w-1/2">
-        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-4">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-3 sm:mb-4">
           <span>Panduan Interaktif</span>
         </div>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-6">
+        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 mb-3 sm:mb-6">
           Hanya 3 Langkah Mudah untuk Memulai
         </h2>
-        <p class="text-base sm:text-lg text-slate-600 mb-10 leading-relaxed">
+        <p class="text-sm sm:text-base text-slate-600 mb-6 sm:mb-10 leading-relaxed">
           Dirancang praktis dan bersih agar siapa saja, mulai dari pemula hingga pemilik konter pulsa berpengalaman, bisa langsung jualan dalam hitungan menit.
         </p>
         
-        <div class="space-y-4" id="step-selector-container">
+        <div class="space-y-3 sm:space-y-4" id="step-selector-container">
           {steps.map((step) => (
             <div 
-              class={`step-card cursor-pointer p-5 rounded-2xl border transition-all duration-300 flex items-start space-x-5 ${step.stepId === 1 ? 'active-step bg-slate-50 border-primary shadow-sm' : 'border-slate-100 hover:border-slate-200 bg-white'}`}
+              role="button"
+              tabindex="0"
+              aria-label={`Langkah ${step.number}: ${step.title}`}
+              class={`step-card cursor-pointer p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex items-start space-x-3.5 sm:space-x-5 ${step.stepId === 1 ? 'active-step bg-slate-50 border-primary shadow-sm' : 'border-slate-100 hover:border-slate-200 bg-white'}`}
               data-step={step.stepId}
             >
-              <div class="step-num text-3xl font-black transition-colors duration-300 pt-0.5 flex-shrink-0">
+              <div class="step-num text-2xl sm:text-3xl font-black transition-colors duration-300 pt-0.5 flex-shrink-0">
                 {step.number}
               </div>
-              <div class="flex-1">
-                <div class="flex items-center justify-between mb-1">
-                  <h3 class="step-title text-lg font-bold transition-colors duration-300">
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-1">
+                  <h3 class="step-title text-base sm:text-lg font-bold transition-colors duration-300">
                     {step.title}
                   </h3>
-                  <span class="step-badge text-[11px] font-bold px-2 py-0.5 rounded-full transition-all duration-300">
+                  <span class="step-badge text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-full transition-all duration-300 w-max">
                     {step.badge}
                   </span>
                 </div>
-                <p class="text-sm text-slate-600 leading-relaxed">{step.description}</p>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">{step.description}</p>
               </div>
             </div>
           ))}
@@ -324,12 +327,21 @@ const steps = [
     }
   };
 
-  // Click handler
+  // Click and keyboard handler
   document.querySelectorAll('.step-card').forEach((card) => {
-    card.addEventListener('click', () => {
+    const handleActivate = () => {
       const step = Number(card.getAttribute('data-step'));
       setStep(step);
       resetAutoTimer();
+    };
+
+    card.addEventListener('click', handleActivate);
+    card.addEventListener('keydown', (e) => {
+      const keyboardEvent = e as KeyboardEvent;
+      if (keyboardEvent.key === 'Enter' || keyboardEvent.key === ' ') {
+        keyboardEvent.preventDefault();
+        handleActivate();
+      }
     });
   });
 

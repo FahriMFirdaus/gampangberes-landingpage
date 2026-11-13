@@ -18,7 +18,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://gampangb
 <html lang="id">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		<link rel="sitemap" href="/sitemap-index.xml" />
@@ -84,10 +84,22 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://gampangb
 				font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
 				background: #FFFFFF;
 				scroll-behavior: smooth;
+				overflow-x: hidden;
+			}
+			body {
+				overflow-x: hidden;
+				position: relative;
+				min-height: 100vh;
+			}
+			.pb-safe {
+				padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+			}
+			.bottom-safe {
+				bottom: max(1rem, env(safe-area-inset-bottom));
 			}
 		</style>
 	</head>
-	<body class="antialiased text-slate-900">
+	<body class="antialiased text-slate-900 overflow-x-hidden min-h-screen relative">
 		<slot />
 
 		<!-- 
@@ -183,12 +195,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://gampangb
 		      // ── Ukuran File ───────────────────────────────────────────────────
 		      if (appStatus.file_size) {
 		        const sizeText = document.getElementById('hero-filesize-text');
+		        const sizeMobileText = document.getElementById('hero-filesize-mobile-text');
 		        const sizeTooltip = document.getElementById('hero-filesize-tooltip');
 		        const bottomSize = document.getElementById('bottom-filesize-text');
 		        const downloadSize = document.getElementById('file-size');
 		        const downloadSizeContainer = document.getElementById('file-size-container');
 
 		        if (sizeText) sizeText.textContent = appStatus.file_size;
+		        if (sizeMobileText) sizeMobileText.textContent = appStatus.file_size;
 		        if (sizeTooltip) sizeTooltip.classList.remove('!hidden');
 		        if (bottomSize) {
 		          bottomSize.textContent = `• Ukuran file ${appStatus.file_size}`;

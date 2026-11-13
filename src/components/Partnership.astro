@@ -44,30 +44,30 @@ const tiers = [
 ];
 ---
 
-<section id="kemitraan" class="py-20 scroll-mt-6 bg-slate-50">
+<section id="kemitraan" class="py-12 sm:py-16 lg:py-20 scroll-mt-6 bg-slate-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-bold mb-4">
+    <div class="text-center mb-8 sm:mb-12">
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-bold mb-3 sm:mb-4">
         <Sparkles class="w-4 h-4" />
         <span>Jenjang Kemitraan Fleksibel</span>
       </div>
-      <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Mulai sebagai Reseller, Tumbuh Menjadi Agen</h2>
-      <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 sm:mb-4">Mulai sebagai Reseller, Tumbuh Menjadi Agen</h2>
+      <p class="text-sm sm:text-base lg:text-lg text-slate-600 max-w-2xl mx-auto">
         Semua pengguna mulai secara gratis. Kumpulkan transaksi Anda dan ajukan upgrade ke status Mitra Agen kapan saja langsung dari aplikasi!
       </p>
     </div>
 
-    <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
       {tiers.map((tier) => (
-        <div class={`relative p-8 lg:p-12 rounded-3xl transition-all duration-300 flex flex-col justify-between ${tier.highlight ? 'bg-primary text-white shadow-2xl shadow-primary/30 md:scale-105 z-10' : 'bg-white text-slate-900 border border-slate-100 shadow-sm'}`}>
+        <div class={`relative p-5 sm:p-8 lg:p-12 rounded-2xl sm:rounded-3xl transition-all duration-300 flex flex-col justify-between ${tier.highlight ? 'bg-primary text-white shadow-2xl shadow-primary/30 md:scale-105 z-10' : 'bg-white text-slate-900 border border-slate-100 shadow-sm'}`}>
           <div>
-            <div class="flex items-center justify-between mb-6">
-              <div class="flex items-center space-x-4">
-                <div class={`p-3 rounded-2xl ${tier.highlight ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'}`}>
-                  <tier.icon class="w-8 h-8" />
+            <div class="flex items-center justify-between mb-5 sm:mb-6">
+              <div class="flex items-center space-x-3 sm:space-x-4">
+                <div class={`p-2.5 sm:p-3 rounded-xl sm:rounded-2xl ${tier.highlight ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'}`}>
+                  <tier.icon class="w-6 h-6 sm:w-8 sm:h-8" />
                 </div>
                 <div>
-                  <h3 class="text-2xl font-bold">{tier.name}</h3>
+                  <h3 class="text-xl sm:text-2xl font-bold">{tier.name}</h3>
                   <span class={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${tier.highlight ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'}`}>
                     {tier.badge}
                   </span>
@@ -75,14 +75,14 @@ const tiers = [
               </div>
             </div>
             
-            <p class={`mb-8 text-sm leading-relaxed ${tier.highlight ? 'text-white/90' : 'text-slate-600'}`}>
+            <p class={`mb-6 sm:mb-8 text-xs sm:text-sm leading-relaxed ${tier.highlight ? 'text-white/90' : 'text-slate-600'}`}>
               {tier.description}
             </p>
 
-            <ul class="space-y-4 mb-10">
+            <ul class="space-y-3 sm:space-y-4 mb-8 sm:mb-10">
               {tier.features.map((feature) => (
-                <li class="flex items-start space-x-3 text-sm">
-                  <CheckCircle2 class={`w-5 h-5 flex-shrink-0 mt-0.5 ${tier.highlight ? 'text-secondary-light' : 'text-primary'}`} />
+                <li class="flex items-start space-x-3 text-xs sm:text-sm">
+                  <CheckCircle2 class={`w-5 h-5 flex-shrink-0 mt-0.5 ${tier.highlight ? 'text-emerald-300' : 'text-primary'}`} />
                   <span class="font-medium" set:html={feature}></span>
                 </li>
               ))}
@@ -92,7 +92,7 @@ const tiers = [
           <div>
             <a 
               href={tier.link} 
-              class={`flex items-center justify-center space-x-2 w-full text-center py-4 rounded-xl font-bold transition-all ${tier.highlight ? 'bg-white text-primary hover:bg-slate-100 shadow-lg' : 'bg-primary text-white hover:bg-primary-dark shadow-lg shadow-primary/20'}`}
+              class={`flex items-center justify-center space-x-2 w-full text-center py-3.5 sm:py-4 rounded-xl font-bold transition-all min-h-[48px] ${tier.highlight ? 'bg-white text-primary hover:bg-slate-100 shadow-lg' : 'bg-primary text-white hover:bg-primary-dark shadow-lg shadow-primary/20'}`}
             >
               <span>{tier.cta}</span>
               <ArrowRight class="w-5 h-5" />

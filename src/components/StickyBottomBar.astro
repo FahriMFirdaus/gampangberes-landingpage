@@ -1,0 +1,106 @@
+---
+import { Download } from 'lucide-astro';
+import { getAppStatus } from '../lib/api';
+
+const appStatus = await getAppStatus();
+const downloadUrl = '/download';
+const version = appStatus?.latest_version || '1.0.0';
+const fileSize = appStatus?.file_size || '';
+---
+
+<aside 
+  id="sticky-mobile-bar"
+  class="fixed bottom-0 left-0 right-0 w-full z-40 md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] transform translate-y-full opacity-0 pointer-events-none transition-all duration-300 ease-in-out px-4 py-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))]"
+  aria-label="Unduh Cepat Aplikasi Mobile"
+>
+  <div class="max-w-md mx-auto flex items-center justify-between gap-3">
+    <!-- Mini Brand & APK Info -->
+    <div class="flex items-center space-x-2.5 min-w-0">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-primary-dark p-2 flex-shrink-0 flex items-center justify-center shadow-sm">
+        <img 
+          src="/images/logo/logo-nobg.webp" 
+          alt="Gampang Beres" 
+          class="w-full h-full object-contain filter drop-shadow brightness-0 invert" 
+          width="24" 
+          height="24" 
+        />
+      </div>
+      <div class="min-w-0">
+        <div class="font-extrabold text-sm text-slate-900 truncate">
+          Gampang<span class="text-secondary">Beres</span>
+        </div>
+        <p class="text-[11px] text-slate-500 truncate font-medium">
+          Gratis • APK v<span id="sticky-version-text">{version}</span>{fileSize ? ` • ${fileSize}` : ''}
+        </p>
+      </div>
+    </div>
+
+    <!-- Action Button (Touch Target >= 44x44px) -->
+    <a 
+      id="sticky-download-link"
+      href={downloadUrl}
+      class="flex-shrink-0 inline-flex items-center justify-center space-x-1.5 bg-primary hover:bg-primary-dark active:scale-95 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-primary/25 min-h-[44px] transition-all"
+    >
+      <Download class="w-4 h-4 animate-bounce flex-shrink-0" />
+      <span>Download APK</span>
+    </a>
+  </div>
+</aside>
+
+<script>
+  const stickyBar = document.getElementById('sticky-mobile-bar');
+  const heroCta = document.getElementById('hero-download-link') || document.getElementById('beranda');
+  const footerElement = document.querySelector('footer');
+
+  if (stickyBar) {
+    let isHeroVisible = true;
+    let isFooterVisible = false;
+
+    const updateVisibility = () => {
+      // Bar is visible only when user has scrolled past Hero AND footer is not in view
+      if (!isHeroVisible && !isFooterVisible) {
+        stickyBar.classList.remove('translate-y-full', 'opacity-0', 'pointer-events-none');
+        stickyBar.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+      } else {
+        stickyBar.classList.add('translate-y-full', 'opacity-0', 'pointer-events-none');
+        stickyBar.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+      }
+    };
+
+    if ('IntersectionObserver' in window) {
+      if (heroCta) {
+        const heroObserver = new IntersectionObserver(
+          ([entry]) => {
+            isHeroVisible = entry.isIntersecting;
+            updateVisibility();
+          },
+          { threshold: 0.1 }
+        );
+        heroObserver.observe(heroCta);
+      }
+
+      if (footerElement) {
+        const footerObserver = new IntersectionObserver(
+          ([entry]) => {
+            isFooterVisible = entry.isIntersecting;
+            updateVisibility();
+          },
+          { threshold: 0.05 }
+        );
+        footerObserver.observe(footerElement);
+      }
+    } else {
+      // Fallback for older browsers
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        const heroHeight = heroCta ? (heroCta as HTMLElement).offsetTop + 50 : 350;
+        const docHeight = document.documentElement.scrollHeight;
+        const windowHeight = window.innerHeight;
+        
+        isHeroVisible = scrollY < heroHeight;
+        isFooterVisible = (scrollY + windowHeight) >= (docHeight - 150);
+        updateVisibility();
+      }, { passive: true });
+    }
+  }
+</script>
