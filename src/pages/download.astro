@@ -102,15 +102,21 @@ const displayChangelog = changelogItems.length > 0 ? changelogItems : defaultHig
                   </span>
                 </div>
                 <p class="text-sm text-slate-500 mb-2">Aplikasi Agen Pulsa, Paket Data, & PPOB Terlengkap</p>
-                <div class="flex flex-wrap items-center gap-3 text-xs text-slate-600 font-medium">
-                  <span class="flex items-center bg-slate-100 px-2.5 py-1 rounded-lg">
+                <div class="flex flex-wrap items-center gap-2 text-xs text-slate-600 font-medium">
+                  <span class="inline-flex items-center bg-slate-100 hover:bg-slate-200/80 px-2.5 py-1 rounded-lg transition-colors whitespace-nowrap">
                     Versi: <strong id="latest-version" class="ml-1 text-slate-900">{version}</strong>
                   </span>
-                  <span id="file-size-container" class="flex items-center bg-slate-100 px-2.5 py-1 rounded-lg">
+                  <span id="file-size-container" class="inline-flex items-center bg-slate-100 hover:bg-slate-200/80 px-2.5 py-1 rounded-lg transition-colors whitespace-nowrap">
                     Ukuran: <strong id="file-size" class="ml-1 text-slate-900">{fileSize}</strong>
                   </span>
-                  <span class="flex items-center bg-slate-100 px-2.5 py-1 rounded-lg">
+                  <span class="inline-flex items-center bg-slate-100 hover:bg-slate-200/80 px-2.5 py-1 rounded-lg transition-colors whitespace-nowrap">
                     Min. Android: <strong class="ml-1 text-slate-900">6.0+</strong>
+                  </span>
+                  <!-- Compact Rating Chip (Sangat rapi di mobile & tablet) -->
+                  <span class="inline-flex items-center bg-amber-50 border border-amber-200/70 text-amber-900 px-2.5 py-1 rounded-lg whitespace-nowrap lg:hidden">
+                    <span class="text-amber-500 mr-1 text-xs">★</span>
+                    <strong id="mobile-rating-score" class="text-slate-900 font-bold mr-1">{avgScore}</strong>
+                    <span id="mobile-rating-count" class="text-slate-500 text-[11px]">({formattedCount})</span>
                   </span>
                 </div>
               </div>
@@ -455,16 +461,21 @@ const displayChangelog = changelogItems.length > 0 ? changelogItems : defaultHig
         const data = json.data;
         const scoreEl = document.getElementById('rating-score');
         const countEl = document.getElementById('rating-count');
+        const mobileScoreEl = document.getElementById('mobile-rating-score');
+        const mobileCountEl = document.getElementById('mobile-rating-count');
 
-        if (scoreEl && data.average_score) {
-          scoreEl.textContent = parseFloat(data.average_score).toFixed(1);
+        if (data.average_score) {
+          const formattedScore = parseFloat(data.average_score).toFixed(1);
+          if (scoreEl) scoreEl.textContent = formattedScore;
+          if (mobileScoreEl) mobileScoreEl.textContent = formattedScore;
         }
-        if (countEl && data.total_count) {
+        if (data.total_count) {
           const count = data.total_count;
           const formatted = count >= 1000
             ? `${(count / 1000).toFixed(1)} ribu agen`
             : `${count} agen`;
-          countEl.textContent = `dari ${formatted}`;
+          if (countEl) countEl.textContent = `dari ${formatted}`;
+          if (mobileCountEl) mobileCountEl.textContent = `(${formatted})`;
         }
       } catch (e) {
         // diam-diam, tidak tampilkan error ke pengguna
