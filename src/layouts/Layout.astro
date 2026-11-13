@@ -57,7 +57,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://gampangb
 		<!-- API Connectivity Optimization -->
 		<link rel="preconnect" href="https://api.gampangberes.biz.id" crossorigin>
 		<link rel="dns-prefetch" href="https://api.gampangberes.biz.id">
-		<link rel="preload" href="https://api.gampangberes.biz.id/api/app-status" as="fetch" crossorigin fetchpriority="high">
 		
 		<!-- Preload Critical Assets -->
 		<link rel="preload" as="image" href="/images/logo/logo-nobg.webp" type="image/webp" fetchpriority="high">
@@ -242,9 +241,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://gampangb
 		    }
 		  }
 
-		  // Jalankan keduanya segera saat halaman load, paralel, tidak saling tunggu
-		  syncDynamicData(true);
-		  updateServerStatus();
+		  // Jalankan background update saat browser idle / setelah initial load agar tidak memblok critical path & LCP
+		  const initBackgroundSync = () => {
+		    syncDynamicData(false);
+		    // Server status health check dijalankan dengan delay kecil agar tidak bentrok
+		    setTimeout(updateServerStatus, 1000);
+		  };
+
+		  if ('requestIdleCallback' in window) {
+		    (window as any).requestIdleCallback(initBackgroundSync, { timeout: 3000 });
+		  } else {
+		    window.addEventListener('load', () => setTimeout(initBackgroundSync, 1000));
+		  }
 
 		  // Polling setiap 60 detik → perubahan admin tampil dalam < 1 menit
 		  const POLL_INTERVAL = 60 * 1000;

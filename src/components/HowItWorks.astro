@@ -30,7 +30,7 @@ const steps = [
       
       <!-- Sisi Kiri: 3 Langkah Navigasi Interaktif -->
       <div class="lg:w-1/2">
-        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-3 sm:mb-4">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-100 text-primary-dark text-xs font-bold mb-3 sm:mb-4">
           <span>Panduan Interaktif</span>
         </div>
         <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 mb-3 sm:mb-6">
@@ -67,7 +67,7 @@ const steps = [
           ))}
         </div>
 
-        <p class="text-xs text-slate-400 mt-4 italic">
+        <p class="text-xs text-slate-600 mt-4 italic">
           💡 Klik atau sentuh salah satu langkah di atas untuk melihat simulasi tampilan aplikasi aslinya di samping.
         </p>
       </div>
@@ -150,12 +150,12 @@ const steps = [
                     <span class="text-slate-400 text-xs">←</span>
                     <span class="text-xs font-bold text-slate-800">Pembayaran Deposit</span>
                   </div>
-                  <span class="text-[10px] font-extrabold text-primary bg-primary/10 px-2 py-0.5 rounded-full">QRIS Otomatis</span>
+                  <span class="text-[10px] font-extrabold text-primary-dark bg-blue-100 px-2 py-0.5 rounded-full">QRIS Otomatis</span>
                 </div>
 
                 <!-- QRIS Card 1:1 -->
                 <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 text-center">
-                  <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Scan QRIS Semua Pembayaran</span>
+                  <span class="text-[10px] text-slate-600 uppercase font-bold tracking-wider">Scan QRIS Semua Pembayaran</span>
                   
                   <!-- QR Code Mockup Graphic -->
                   <div class="w-28 h-28 mx-auto my-2.5 bg-slate-900 rounded-xl p-2 flex flex-col justify-between shadow-inner relative overflow-hidden">
@@ -182,8 +182,8 @@ const steps = [
 
                   <p class="text-[11px] text-slate-500 font-medium">Bisa dari DANA, OVO, GoPay, ShopeePay & m-Banking</p>
                   
-                  <div class="mt-2.5 pt-2.5 border-t border-dashed border-slate-100 flex justify-between items-center text-xs">
-                    <span class="text-slate-400">Nominal Transfer</span>
+                  <div class="mt-2.5 pt-2.5 border-t border-dashed border-slate-200 flex justify-between items-center text-xs">
+                    <span class="text-slate-600 font-medium">Nominal Transfer</span>
                     <span class="text-sm font-black text-slate-900">Rp 100.000</span>
                   </div>
                 </div>
@@ -266,29 +266,29 @@ const steps = [
 
 <style>
   .step-card.active-step {
-    border-color: #3b82f6;
+    border-color: #2563eb;
     background-color: #eff6ff;
   }
   .step-card.active-step .step-num {
-    color: #2563eb;
+    color: #1e5191;
   }
   .step-card.active-step .step-title {
-    color: #1d4ed8;
+    color: #1e40af;
   }
   .step-card.active-step .step-badge {
-    background-color: #2563eb;
+    background-color: #1e5191;
     color: #ffffff;
   }
 
   .step-card:not(.active-step) .step-num {
-    color: #94a3b8;
+    color: #64748b;
   }
   .step-card:not(.active-step) .step-title {
     color: #0f172a;
   }
   .step-card:not(.active-step) .step-badge {
     background-color: #f1f5f9;
-    color: #64748b;
+    color: #334155;
   }
 </style>
 
