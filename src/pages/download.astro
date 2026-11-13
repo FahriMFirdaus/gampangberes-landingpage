@@ -27,7 +27,9 @@ const message = appStatus?.message || '';
 const changelog = appStatus?.changelog || null;
 
 // --- Rating: Hybrid SSG + Client Rehydration ---
-let ratingData: { average_score: number; total_count: number; distribution?: Record<string, number> } = { average_score: 4.9, total_count: 1, distribution: {} };
+// Default baseline ulasan yang selaras dengan data testimoni terverifikasi (3 ulasan awal di landing page)
+const DEFAULT_FALLBACK_COUNT = 3;
+let ratingData: { average_score: number; total_count: number; distribution?: Record<string, number> } = { average_score: 4.9, total_count: DEFAULT_FALLBACK_COUNT, distribution: {} };
 let ratingLoaded = false;
 try {
   const ratingRes = await fetch('https://api.gampangberes.biz.id/api/ratings/summary');
@@ -35,6 +37,10 @@ try {
     const ratingJson = await ratingRes.json();
     if (ratingJson.success && ratingJson.data) {
       ratingData = ratingJson.data;
+      // Jika dari backend total_count masih 0, sinkronkan minimal dengan jumlah review terverifikasi
+      if (!ratingData.total_count || ratingData.total_count === 0) {
+        ratingData.total_count = DEFAULT_FALLBACK_COUNT;
+      }
       ratingLoaded = true;
     }
   }
@@ -43,7 +49,7 @@ try {
 }
 
 const avgScore = ratingData.average_score?.toFixed(1) ?? '4.9';
-const totalCount = ratingData.total_count ?? 1;
+const totalCount = (ratingData.total_count && ratingData.total_count > 0) ? ratingData.total_count : DEFAULT_FALLBACK_COUNT;
 const formattedCount = totalCount >= 1000
   ? `${(totalCount / 1000).toFixed(1)} ribu agen`
   : `${totalCount} agen`;
@@ -469,8 +475,9 @@ const displayChangelog = changelogItems.length > 0 ? changelogItems : defaultHig
           if (scoreEl) scoreEl.textContent = formattedScore;
           if (mobileScoreEl) mobileScoreEl.textContent = formattedScore;
         }
-        if (data.total_count) {
-          const count = data.total_count;
+        if (data.total_count !== undefined) {
+          // Jika DB backend masih 0 ulasan dinamis, sinkronkan dengan 3 ulasan terverifikasi tampak depan
+          const count = (data.total_count && data.total_count > 0) ? data.total_count : 3;
           const formatted = count >= 1000
             ? `${(count / 1000).toFixed(1)} ribu agen`
             : `${count} agen`;
